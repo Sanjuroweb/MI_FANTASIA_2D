@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour //30
     public PlayerController player; //37
     public TextMeshProUGUI textoMonedas; //37 HECHO POR MI, cambie el tipo de Text a TextMeshProUGUI porque en el inspector no me dejaba asignar al GameManager
     public int monedas;
+    public Text guardarPartidaTexto; //46
 
     public GameObject panelPausa; //42
     public GameObject panelGameOver; //42
@@ -26,6 +27,42 @@ public class GameManager : MonoBehaviour //30
             instance = this;
         else
             Destroy(this.gameObject);
+
+        //46 recordar mirar el video y como borrar los datos del jugador desde unity
+        //edit/clear all PlayerPrefs
+        if(PlayerPrefs.GetInt("vidas") != 0)
+            CargarPartida();
+    }
+
+    //46
+    public void GuardarPartida()
+    {
+        float x, y;
+        x = player.transform.position.x;
+        y = player.transform.position.y;
+
+        int vidas = player.vidas;
+
+        //en el video se comenta que esta sacado de la web de unity
+        //se usa para guardar los datos del player en memoria
+        PlayerPrefs.SetInt("monedas", monedas);
+        PlayerPrefs.SetFloat("x", x);
+        PlayerPrefs.SetFloat("y", y);
+        PlayerPrefs.SetInt("vidas", vidas);
+    }
+
+    //46 cargamos los datos guardados en PlayerPrefs
+    //tenemos que llamarla desde el Awake()
+    public void CargarPartida()
+    {
+        monedas = PlayerPrefs.GetInt("monedas");
+        player.transform.position = new Vector2(PlayerPrefs.GetFloat("x"), PlayerPrefs.GetFloat("y"));
+        player.vidas = PlayerPrefs.GetInt("vidas");
+        textoMonedas.text = monedas.ToString();
+
+        int vidasADescontar = 3 - player.vidas; //46
+
+        player.ActualizarVidasUI(vidasADescontar); //46
     }
 
     //37

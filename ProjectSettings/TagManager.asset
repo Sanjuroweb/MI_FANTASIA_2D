@@ -10,6 +10,7 @@ TagManager:
   - Plataforma
   - Moneda
   - PowerUp
+  - Checkpoint
   layers:
   - Default
   - TransparentFX

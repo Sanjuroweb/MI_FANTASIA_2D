@@ -114,19 +114,45 @@ public class PlayerController : MonoBehaviour
             Time.timeScale = 1;
             gc.enabled = false;
 
+            ActualizarVidasUI(1);
+
             //para eliminar 1 a 1 las 3 pocimas de vida del UI
             //le ponemos -1 para que sea 0, 1, 2
-            for(int i = GameManager.instance.vidasUI.transform.childCount - 1; i >= 0; i--)
+            //lo comentamos en el 46 para meterlo en la funcion de abajo ActualizarVidasUI()
+            /*for(int i = GameManager.instance.vidasUI.transform.childCount - 1; i >= 0; i--)
             {
                 if (GameManager.instance.vidasUI.transform.GetChild(i).gameObject.activeInHierarchy)
                 {
                     GameManager.instance.vidasUI.transform.GetChild(i).gameObject.SetActive(false);
                     break;
                 }
-            }
+            }*/
 
             velocidaDeMovimiento = velocidadAuxiliar;
             Morir();
+        }
+    }
+
+    //46
+    public void ActualizarVidasUI(int vidasADescontar)
+    {
+        int vidasDescontadas = vidasADescontar;
+
+        //lo hemos cortado y pegado de ImpactoDaño en el 46
+        //para eliminar 1 a 1 las 3 pocimas de vida del UI
+        //le ponemos -1 para que sea 0, 1, 2
+        for (int i = GameManager.instance.vidasUI.transform.childCount - 1; i >= 0; i--)
+        {
+            if (GameManager.instance.vidasUI.transform.GetChild(i).gameObject.activeInHierarchy && vidasDescontadas != 0)
+            {
+                GameManager.instance.vidasUI.transform.GetChild(i).gameObject.SetActive(false);
+                //break;
+            }
+            else
+            {
+                if (vidasDescontadas == 0)
+                    break;
+            }
         }
     }
 
