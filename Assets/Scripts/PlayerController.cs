@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private int direccionX; //47
+
     private Rigidbody2D rb;
     private Animator anim;
     public Vector2 direccion;
@@ -47,6 +49,7 @@ public class PlayerController : MonoBehaviour
     public bool saltarDeMuro; //22
     public bool esInmortal; //30
     public bool aplicarFuerza; //30
+    public bool terminandoMapa; //47
 
 
     [Header("Movimientos")]
@@ -146,6 +149,7 @@ public class PlayerController : MonoBehaviour
             if (GameManager.instance.vidasUI.transform.GetChild(i).gameObject.activeInHierarchy && vidasDescontadas != 0)
             {
                 GameManager.instance.vidasUI.transform.GetChild(i).gameObject.SetActive(false);
+                vidasDescontadas--;
                 //break;
             }
             else
@@ -195,6 +199,25 @@ public class PlayerController : MonoBehaviour
         esInmortal = false;
     }
 
+    //47 cuando creamos referencia en el inspector no se podia porque teniamos como parametro un Vector2
+    //lo hemos cambiado a int el tipo de dato del parametro
+    public void MovimientoFinalMapa(int direccionX)
+    {
+        terminandoMapa = true;
+        this.direccionX = direccionX;
+        anim.SetBool("caminar", true);
+
+        if (this.direccionX < 0 && transform.localScale.x > 0)
+        {
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        }
+
+        else if (this.direccionX > 0 && transform.localScale.x < 0)
+        {
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
+    }
+
     // Start is called before the first frame update SE LLAMA DESPUES DE Awake()
     //se usa en el primer fotograma
     void Start()
@@ -205,8 +228,16 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Movimiento();
-        Agarres();
+        //47 hemos metido aqui dentro el movimiento y agarre
+        if (!terminandoMapa)
+        {
+            Movimiento();
+            Agarres();
+        }
+        else
+        {
+            rb.velocity = (new Vector2(direccionX * velocidaDeMovimiento, rb.velocity.y));
+        }
     }
 
     //realiza la animacion de atacar en funcion de la direccion, dentro de Movimiento() 19

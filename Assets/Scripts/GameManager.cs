@@ -7,16 +7,24 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour //30
 {
+    private bool ejecutando; //46
+
     public static GameManager instance;
     public GameObject vidasUI;
     public PlayerController player; //37
     public TextMeshProUGUI textoMonedas; //37 HECHO POR MI, cambie el tipo de Text a TextMeshProUGUI porque en el inspector no me dejaba asignar al GameManager
     public int monedas;
-    public Text guardarPartidaTexto; //46
+    public TextMeshProUGUI guardarPartidaTexto; //46
 
     public GameObject panelPausa; //42
     public GameObject panelGameOver; //42
     public GameObject panelCarga; //42
+
+    public bool avanzandoNivel;
+    public int nivelActual; //47
+    public List<Transform> posicionesAvance = new List<Transform>(); //47
+    public List<Transform> posicionesRetroceder = new List<Transform>(); //47
+    public GameObject panelTransicion; //47
 
 
     //hacemos un patron Singleton
@@ -34,6 +42,37 @@ public class GameManager : MonoBehaviour //30
             CargarPartida();
     }
 
+    //47 lo llamaremos desde jugador
+    public void ActivarPanelTransicion()
+    {
+        panelTransicion.GetComponent<Animator>().SetTrigger("ocultar");
+    }
+    
+    //47
+    public void CambiarPosicionJugador()
+    {
+        if (avanzandoNivel)
+        {
+            if(nivelActual + 1 < posicionesAvance.Count)
+            {
+                player.transform.position = posicionesAvance[nivelActual + 1].transform.position;
+                player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                player.GetComponent<Animator>().SetBool("caminar", false);
+                player.terminandoMapa = false;
+            }
+        }
+        else
+        {
+            if (posicionesRetroceder.Count  < nivelActual - 1)
+            {
+                player.transform.position = posicionesRetroceder[nivelActual - 1].transform.position;
+                player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                player.GetComponent<Animator>().SetBool("caminar", false);
+                player.terminandoMapa = false;
+            }
+        }
+    }
+
     //46
     public void GuardarPartida()
     {
@@ -42,6 +81,7 @@ public class GameManager : MonoBehaviour //30
         y = player.transform.position.y;
 
         int vidas = player.vidas;
+        string nombreEscena = SceneManager.GetActiveScene().name; //48
 
         //en el video se comenta que esta sacado de la web de unity
         //se usa para guardar los datos del player en memoria
@@ -49,6 +89,27 @@ public class GameManager : MonoBehaviour //30
         PlayerPrefs.SetFloat("x", x);
         PlayerPrefs.SetFloat("y", y);
         PlayerPrefs.SetInt("vidas", vidas);
+        PlayerPrefs.SetString("nombreEscena", nombreEscena);  //48
+
+        //disparamos el texto de guardado
+        if (!ejecutando)
+            StartCoroutine(MostrarTextoGuardado());
+    }
+
+    //46 para que se muestre el texto de partida guardad solo por un ratito
+    private IEnumerator MostrarTextoGuardado()
+    {
+        ejecutando = true; //para que no se superponga la ejecucion de corrutinas
+        guardarPartidaTexto.gameObject.SetActive(true);
+        yield return new WaitForSeconds(1);
+        guardarPartidaTexto.gameObject.SetActive(false);
+        ejecutando = false;
+    }
+
+    //48
+    public void CargarNivel(string nombreNivel)
+    {
+        SceneManager.LoadScene(nombreNivel);
     }
 
     //46 cargamos los datos guardados en PlayerPrefs
@@ -59,6 +120,12 @@ public class GameManager : MonoBehaviour //30
         player.transform.position = new Vector2(PlayerPrefs.GetFloat("x"), PlayerPrefs.GetFloat("y"));
         player.vidas = PlayerPrefs.GetInt("vidas");
         textoMonedas.text = monedas.ToString();
+        //48 en el inspector cambio la referencia en el Canvas/Panel_Game_Over/Button_Continuar
+        /*if (PlayerPrefs.GetString("nombreEscena") == string.Empty)
+            SceneManager.LoadScene("LevelSelect");
+        else
+            SceneManager.LoadScene(PlayerPrefs.GetString("nombreEscena"));
+        */
 
         int vidasADescontar = 3 - player.vidas; //46
 

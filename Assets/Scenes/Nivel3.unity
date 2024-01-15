@@ -3150,52 +3150,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
-      propertyPath: esSelector
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
       propertyPath: esCheckPoint
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
       propertyPath: evento.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
       propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 663820224}
-    - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CargarNivel
-      objectReference: {fileID: 0}
-    - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GameManager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Nivel2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 4000858197277551678, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.63
+      value: 0.98
       objectReference: {fileID: 0}
     - target: {fileID: 4000858197277551678, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.23
+      value: 1.22
       objectReference: {fileID: 0}
     - target: {fileID: 4000858197277551678, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
       propertyPath: m_LocalPosition.z
@@ -27607,7 +27579,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: LevelSelect
+          m_StringArgument: Nivel3
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1314714638
@@ -28954,45 +28926,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
-      propertyPath: esSelector
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
       propertyPath: esCheckPoint
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
       propertyPath: evento.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
       propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 663820224}
-    - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CargarNivel
-      objectReference: {fileID: 0}
-    - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GameManager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Nivel3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 4000858197277551678, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
       propertyPath: m_LocalPosition.x
       value: 11.83
@@ -30255,52 +30199,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
-      propertyPath: esSelector
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
       propertyPath: esCheckPoint
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
       propertyPath: evento.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
       propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 663820224}
-    - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CargarNivel
-      objectReference: {fileID: 0}
-    - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GameManager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Nivel1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3320362406107981375, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 4000858197277551678, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.77
+      value: -8.36
       objectReference: {fileID: 0}
     - target: {fileID: 4000858197277551678, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.26
+      value: 5.14
       objectReference: {fileID: 0}
     - target: {fileID: 4000858197277551678, guid: 0761a73b6a2e408498ccdb907c44b379, type: 3}
       propertyPath: m_LocalPosition.z
