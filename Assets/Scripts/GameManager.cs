@@ -81,7 +81,8 @@ public class GameManager : MonoBehaviour //30
         y = player.transform.position.y;
 
         int vidas = player.vidas;
-        string nombreEscena = SceneManager.GetActiveScene().name; //48
+        //string nombreEscena = SceneManager.GetActiveScene().name; //48
+        int nombreEscena = nivelActual; //49
 
         //en el video se comenta que esta sacado de la web de unity
         //se usa para guardar los datos del player en memoria
@@ -89,7 +90,8 @@ public class GameManager : MonoBehaviour //30
         PlayerPrefs.SetFloat("x", x);
         PlayerPrefs.SetFloat("y", y);
         PlayerPrefs.SetInt("vidas", vidas);
-        PlayerPrefs.SetString("nombreEscena", nombreEscena);  //48
+        //PlayerPrefs.SetString("nombreEscena", nombreEscena);  //48
+        PlayerPrefs.SetInt("nivel", nombreEscena);  //49
 
         //disparamos el texto de guardado
         if (!ejecutando)
@@ -120,6 +122,8 @@ public class GameManager : MonoBehaviour //30
         player.transform.position = new Vector2(PlayerPrefs.GetFloat("x"), PlayerPrefs.GetFloat("y"));
         player.vidas = PlayerPrefs.GetInt("vidas");
         textoMonedas.text = monedas.ToString();
+        nivelActual = PlayerPrefs.GetInt("nivel");
+
         //48 en el inspector cambio la referencia en el Canvas/Panel_Game_Over/Button_Continuar
         /*if (PlayerPrefs.GetString("nombreEscena") == string.Empty)
             SceneManager.LoadScene("LevelSelect");
