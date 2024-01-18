@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -20,10 +21,14 @@ public class GameManager : MonoBehaviour //30
     public GameObject panelGameOver; //42
     public GameObject panelCarga; //42
 
+    //49 para corregir el proble que al cambiar de nivel la camara no le sigue
+    public CinemachineConfiner cinemachineConfiner;
+
     public bool avanzandoNivel;
     public int nivelActual; //47
     public List<Transform> posicionesAvance = new List<Transform>(); //47
     public List<Transform> posicionesRetroceder = new List<Transform>(); //47
+    public List<Collider2D> areasCamara = new List<Collider2D>(); //49 para lo del seguimiento de la camara
     public GameObject panelTransicion; //47
 
 
@@ -55,7 +60,9 @@ public class GameManager : MonoBehaviour //30
         {
             if(nivelActual + 1 < posicionesAvance.Count)
             {
+                Debug.Log(nivelActual);
                 player.transform.position = posicionesAvance[nivelActual + 1].transform.position;
+                cinemachineConfiner.m_BoundingShape2D = areasCamara[nivelActual + 1];
                 player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                 player.GetComponent<Animator>().SetBool("caminar", false);
                 player.terminandoMapa = false;
@@ -63,9 +70,11 @@ public class GameManager : MonoBehaviour //30
         }
         else
         {
-            if (posicionesRetroceder.Count  < nivelActual - 1)
+            if (posicionesRetroceder.Count > nivelActual - 1)
             {
+                Debug.Log(nivelActual);
                 player.transform.position = posicionesRetroceder[nivelActual - 1].transform.position;
+                cinemachineConfiner.m_BoundingShape2D = areasCamara[nivelActual - 1];
                 player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                 player.GetComponent<Animator>().SetBool("caminar", false);
                 player.terminandoMapa = false;
