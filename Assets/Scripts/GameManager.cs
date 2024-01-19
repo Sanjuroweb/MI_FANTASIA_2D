@@ -9,6 +9,8 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour //30
 {
     private bool ejecutando; //46
+    private bool cargandoNivel; //49
+    private int indiceNivelInicio; //49
 
     public static GameManager instance;
     public GameObject vidasUI;
@@ -51,6 +53,18 @@ public class GameManager : MonoBehaviour //30
     public void ActivarPanelTransicion()
     {
         panelTransicion.GetComponent<Animator>().SetTrigger("ocultar");
+    }
+
+    //49
+    private void PosicionInicialJugador(int indiceNivelInicio)
+    {
+        player.transform.position = posicionesAvance[indiceNivelInicio].transform.position;
+    }
+
+    //49
+    public void SetIndiceNivelInicio(int indiceNivelInicio)
+    {
+        this.indiceNivelInicio = indiceNivelInicio;
     }
     
     //47
@@ -180,12 +194,35 @@ public class GameManager : MonoBehaviour //30
     {
         Time.timeScale = 1;
         SceneManager.LoadScene("LevelSelect");
-    } 
-    
-    //42
+    }
+
+    //49
     public void CargarEscena(string escenaACargar)
     {
-        SceneManager.LoadScene(escenaACargar);
+        StartCoroutine(CargarEscenaCorrutina(escenaACargar));
+    }
+
+    //42
+    public IEnumerator CargarEscenaCorrutina(string escenaACargar)
+    {
+        cargandoNivel = true; //49
+        //SceneManager.LoadScene(escenaACargar); borrado en el 49
+
+        //49 para que sea sincrono
+        panelCarga.SetActive(true);
+
+        AsyncOperation asyncload = SceneManager.LoadSceneAsync(escenaACargar);
+
+        //wait until the asynchronous scene fully loads
+        while (asyncload.isDone)
+        {
+            //cuando tengamos una escena mas grande durará más tiempo la pantalla de carga
+            yield return null;
+            //para hacer que la pantalla de carga dure mas tiempo artificialmente
+            //yield return new WaitForSeconds(1);
+        }
+        PosicionInicialJugador(indiceNivelInicio);
+        cargandoNivel = false;
     } 
     
     //42
