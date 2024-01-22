@@ -45,8 +45,26 @@ public class GameManager : MonoBehaviour //30
 
         //46 recordar mirar el video y como borrar los datos del jugador desde unity
         //edit/clear all PlayerPrefs
-        if(PlayerPrefs.GetInt("vidas") != 0)
+        //comentado en el 49
+        /*if(PlayerPrefs.GetInt("vidas") != 0)
             CargarPartida();
+        */
+    }
+
+    //49
+    private void Start()
+    {
+        if(SceneManager.GetActiveScene().name == "nivel1")
+        {
+            nivelActual = PlayerPrefs.GetInt("indiceNivelInicio");
+            indiceNivelInicio = PlayerPrefs.GetInt("indiceNivelInicio");
+            PosicionInicialJugador(indiceNivelInicio);
+            cinemachineConfiner.m_BoundingShape2D = areasCamara[indiceNivelInicio];
+        }
+        else if(SceneManager.GetActiveScene().name == "LevelSelect")
+        {
+            PosicionInicialJugador(0);
+        }
     }
 
     //47 lo llamaremos desde jugador
@@ -65,6 +83,7 @@ public class GameManager : MonoBehaviour //30
     public void SetIndiceNivelInicio(int indiceNivelInicio)
     {
         this.indiceNivelInicio = indiceNivelInicio;
+        PlayerPrefs.SetInt("indiceNivelInicio", indiceNivelInicio);
     }
     
     //47
@@ -115,6 +134,7 @@ public class GameManager : MonoBehaviour //30
         PlayerPrefs.SetInt("vidas", vidas);
         //PlayerPrefs.SetString("nombreEscena", nombreEscena);  //48
         PlayerPrefs.SetInt("nivel", nombreEscena);  //49
+        PlayerPrefs.SetInt("indiceNivelInicio", indiceNivelInicio);  //49
 
         //disparamos el texto de guardado
         if (!ejecutando)
@@ -146,6 +166,8 @@ public class GameManager : MonoBehaviour //30
         player.vidas = PlayerPrefs.GetInt("vidas");
         textoMonedas.text = monedas.ToString();
         nivelActual = PlayerPrefs.GetInt("nivel");
+        cinemachineConfiner.m_BoundingShape2D = areasCamara[nivelActual]; //49
+        indiceNivelInicio = PlayerPrefs.GetInt("indiceNivelInicio"); //49
 
         //48 en el inspector cambio la referencia en el Canvas/Panel_Game_Over/Button_Continuar
         /*if (PlayerPrefs.GetString("nombreEscena") == string.Empty)
@@ -156,6 +178,7 @@ public class GameManager : MonoBehaviour //30
 
         int vidasADescontar = 3 - player.vidas; //46
 
+        player.MostrarVidasUI();
         player.ActualizarVidasUI(vidasADescontar); //46
     }
 
@@ -221,7 +244,7 @@ public class GameManager : MonoBehaviour //30
             //para hacer que la pantalla de carga dure mas tiempo artificialmente
             //yield return new WaitForSeconds(1);
         }
-        PosicionInicialJugador(indiceNivelInicio);
+        //PosicionInicialJugador(indiceNivelInicio); //comentada en el 49
         cargandoNivel = false;
     } 
     
@@ -229,6 +252,21 @@ public class GameManager : MonoBehaviour //30
     public void GameOver()
     {
         panelGameOver.SetActive(true);
+
+        //49
+        //el if que habia aqui lo cortamos y pegamos en la funcion de abajo ContinuarJuego()
+    }
+
+    //49
+    public void ContinuarJuego()
+    {
+        //49
+        if (PlayerPrefs.GetFloat("x") != 0.0f)
+        {
+            player.enabled = true;
+            CargarPartida();
+            panelGameOver.SetActive(false);
+        }
     }
     
     //42

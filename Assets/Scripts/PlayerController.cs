@@ -136,6 +136,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    //49
+    public void MostrarVidasUI()
+    {
+        for (int i = 0; i < GameManager.instance.vidasUI.transform.childCount; i++)
+        {
+            GameManager.instance.vidasUI.transform.GetChild(i).gameObject.SetActive(true);
+        }
+    }
+
     //46
     public void ActualizarVidasUI(int vidasADescontar)
     {
