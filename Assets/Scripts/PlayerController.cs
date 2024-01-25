@@ -18,6 +18,9 @@ public class PlayerController : MonoBehaviour
     private GrayCamera gc; //30
     private SpriteRenderer sprite; //30
 
+    private float velocidadDeMovimientoAuxiliar; //50
+    private CapsuleCollider2D collider; //50
+
     [Header("Estadisticas")]
     public float velocidaDeMovimiento = 10;
     public float fuerzaDeSalto = 5;
@@ -50,6 +53,7 @@ public class PlayerController : MonoBehaviour
     public bool esInmortal; //30
     public bool aplicarFuerza; //30
     public bool terminandoMapa; //47
+    private bool agachandose; //50
 
 
     [Header("Movimientos")]
@@ -64,6 +68,9 @@ public class PlayerController : MonoBehaviour
         cm = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
         gc = Camera.main.GetComponent<GrayCamera>();
         sprite = GetComponent<SpriteRenderer>();
+
+        velocidadDeMovimientoAuxiliar = velocidaDeMovimiento; //50
+        collider = GetComponent<CapsuleCollider2D>();
     }
 
     //creamos funcion para añadirlo al evento dentro de atacarA 25
@@ -249,6 +256,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    //50
+    private void Agacharse()
+    {
+        agachandose = true;
+        collider.offset = new Vector2(-0.003442526f, -0.2869635f);
+        collider.size = new Vector2(1.006073f, 1.006073f);
+        anim.SetBool("agachado", true);
+        velocidaDeMovimiento = velocidadDeMovimientoAuxiliar / 3;
+    }
+
     //realiza la animacion de atacar en funcion de la direccion, dentro de Movimiento() 19
     //el vector direccion es la dir a donde vamos a atacar
     private void Atacar(Vector2 direccion)
@@ -387,6 +404,20 @@ public class PlayerController : MonoBehaviour
         Caminar();
         //direccionMovimiento la sacamos de Caminar() 19
         Atacar(DireccionAtaque(direccionMovimiento, direccionRaw));
+
+        //50
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            Agacharse();
+        }
+        else if(agachandose)
+        {
+            collider.offset = new Vector2(-0.003442526f, -0.01574576f);
+            collider.size = new Vector2(1.006073f, 1.548508f);
+            velocidaDeMovimiento = velocidadDeMovimientoAuxiliar;
+            anim.SetBool("agachado", false);
+            agachandose = false;
+        }
 
         //22
         if(enSuelo && !haciendoDash)
