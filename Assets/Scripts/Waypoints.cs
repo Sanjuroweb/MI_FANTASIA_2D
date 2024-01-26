@@ -46,6 +46,13 @@ public class Waypoints : MonoBehaviour //31
         {
             CambiarEscalaEnemigo();
         }
+
+        //53
+        if (aplicarFuerza)
+        {
+            rb.AddForce((transform.position - player.transform.position).normalized * 25, ForceMode2D.Impulse);
+            aplicarFuerza = false;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

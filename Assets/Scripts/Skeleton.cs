@@ -74,7 +74,9 @@ public class Skeleton : MonoBehaviour //arranca en el 27
                 Vector2 movimiento = new Vector2(direccion.x, 0);
                 movimiento = movimiento.normalized;
                 //le aplicamos fuerza al enemy
-                rb.velocity = movimiento * velocidadMovimiento;
+                //lo comentamos en el 52 para solucionar que el eskeleto volaba
+                //rb.velocity = movimiento * velocidadMovimiento;
+                rb.velocity = new Vector2(movimiento.x * velocidadMovimiento, rb.velocity.y);
                 anim.SetBool("caminando", true);
                 CambiarVista(movimiento.x);
             }

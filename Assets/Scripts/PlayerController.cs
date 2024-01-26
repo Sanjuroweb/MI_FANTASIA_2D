@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private GameObject ultimoEnemigo; //53
+
     private int direccionX; //47
 
     private Rigidbody2D rb;
@@ -254,13 +256,33 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = (new Vector2(direccionX * velocidaDeMovimiento, rb.velocity.y));
         }
+
+        //53 para lo del retroceso de la collision
+        if (!esInmortal && ultimoEnemigo != null)
+        {
+            Physics2D.IgnoreCollision(ultimoEnemigo.GetComponent<Collider2D>(), GetComponent<Collider2D>(), false);
+            ultimoEnemigo = null;
+        }
+    }
+
+    //53 para el retroceso
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("enemigo"))
+        {
+            if (esInmortal)
+            {
+                ultimoEnemigo = collision.gameObject;
+                Physics2D.IgnoreCollision(ultimoEnemigo.GetComponent<Collider2D>(), GetComponent<Collider2D>(), true);
+            }
+        }
     }
 
     //50
     private void Agacharse()
     {
         agachandose = true;
-        collider.offset = new Vector2(-0.003442526f, -0.2869635f);
+        collider.offset = new Vector2(-0.003442526f, -0.1217294f);
         collider.size = new Vector2(1.006073f, 1.006073f);
         anim.SetBool("agachado", true);
         velocidaDeMovimiento = velocidadDeMovimientoAuxiliar / 3;
@@ -688,7 +710,11 @@ public class PlayerController : MonoBehaviour
                     //animaciones de caer y caminar
                     if (!enSuelo)
                     {
-                        anim.SetBool("saltar", true); // si no esta en suelo hago animacion caer, para animaciones 13
+                        //51
+                        if (agachandose)
+                            anim.SetBool("caminar", true);
+                        else
+                            anim.SetBool("saltar", true); // si no esta en suelo hago animacion caer, para animaciones 13
                     }
                     else
                     {
