@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 public class Waypoints : MonoBehaviour //31
 {
@@ -14,6 +15,7 @@ public class Waypoints : MonoBehaviour //31
     //nos indica en que punto se encuentra
     private int indiceActual = 0;
     private bool aplicarFuerza;
+    public bool agitando; //55
 
     public int vidas = 3;
     //porque puede morir con player pisandole la cabeza
@@ -23,6 +25,7 @@ public class Waypoints : MonoBehaviour //31
     public List<Transform> puntos = new List<Transform>();
     public bool esperando; //36
     public float tiempoDeEspera; //36
+    public float fuerzaImpacto; //55
 
     private void Awake()
     {
@@ -50,7 +53,9 @@ public class Waypoints : MonoBehaviour //31
         //53
         if (aplicarFuerza)
         {
-            rb.AddForce((transform.position - player.transform.position).normalized * 25, ForceMode2D.Impulse);
+            //55 modificamos 25 por fuerzaImpacto y colocamos 15 en el inspector
+            //rb.AddForce((transform.position - player.transform.position).normalized * 25, ForceMode2D.Impulse);
+            rb.AddForce((transform.position - player.transform.position).normalized * fuerzaImpacto, ForceMode2D.Impulse);
             aplicarFuerza = false;
         }
     }
@@ -156,7 +161,10 @@ public class Waypoints : MonoBehaviour //31
         }
         else
         {
-            StartCoroutine(AgitarCamara(0.1f));
+            //55 comentamos y llamamos a ultimoAgitarCamara
+            //StartCoroutine(AgitarCamara(0.1f));
+            StartCoroutine(UltimoAgitarCamara(0.1f));
+
             //53 pegamos en Morir() para corregir tembleke continuo cuando matar bixo
             /*velocidadDesplazamiento = 0;
             rb.velocity = Vector2.zero;
@@ -178,12 +186,38 @@ public class Waypoints : MonoBehaviour //31
 
     private IEnumerator AgitarCamara(float tiempo)
     {
-        CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = cm.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 5;
-        yield return new WaitForSeconds(tiempo);
-        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
-        //53 para corregir tembleke continuo cuando matar bixo
-        Morir();
+        //55 ponemos contenido dentro de if
+        if (!agitando)
+        {
+            agitando = true;
+            CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = cm.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 5;
+            yield return new WaitForSeconds(tiempo);
+            cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
+            //53 para corregir tembleke continuo cuando matar bixo
+            //Morir(); comentado en el 55
+            //55
+            agitando = false;
+        }
+    }
+    
+    //55 copiamos funcion y pegamos
+    private IEnumerator UltimoAgitarCamara(float tiempo)
+    {
+        //55 ponemos contenido dentro de if
+        if (!agitando)
+        {
+            transform.localScale = Vector3.zero; //para reducir su tamaño y dar sensacion
+            agitando = true;
+            CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = cm.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 5;
+            yield return new WaitForSeconds(tiempo);
+            cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
+            //53 para corregir tembleke continuo cuando matar bixo
+            Morir();
+            //55
+            agitando = false;
+        }
     }
 
     private IEnumerator EfectoDaño()

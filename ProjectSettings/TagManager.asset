@@ -78,6 +78,12 @@ TagManager:
   - name: Suelo
     uniqueID: 3961684661
     locked: 0
+  - name: Props
+    uniqueID: 1620198927
+    locked: 0
   - name: Character
     uniqueID: 2050349945
+    locked: 0
+  - name: UI
+    uniqueID: 2583096133
     locked: 0
