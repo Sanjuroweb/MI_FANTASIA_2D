@@ -794,11 +794,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3861451622488482860, guid: d638a390d2ff25944b3cb8cb40945c88, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -16.48
+      value: -17.13
       objectReference: {fileID: 0}
     - target: {fileID: 3861451622488482860, guid: d638a390d2ff25944b3cb8cb40945c88, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.76
+      value: 4.84
       objectReference: {fileID: 0}
     - target: {fileID: 3861451622488482860, guid: d638a390d2ff25944b3cb8cb40945c88, type: 3}
       propertyPath: m_LocalPosition.z
@@ -22170,7 +22170,7 @@ Transform:
   m_GameObject: {fileID: 155447061}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.8, y: 2.94, z: -10}
+  m_LocalPosition: {x: 0.98, y: 1.16, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -23718,7 +23718,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.8, y: 2.94, z: -10}
+  m_LocalPosition: {x: 0.98, y: 1.16, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -25200,13 +25200,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spider
       objectReference: {fileID: 0}
+    - target: {fileID: 2431024424550505341, guid: bdf0eeeb844cbec4e9e084dfdfb3bdff, type: 3}
+      propertyPath: m_TagString
+      value: Enemigo
+      objectReference: {fileID: 0}
     - target: {fileID: 5324904286898654575, guid: bdf0eeeb844cbec4e9e084dfdfb3bdff, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 16.6
+      value: 57.5
       objectReference: {fileID: 0}
     - target: {fileID: 5324904286898654575, guid: bdf0eeeb844cbec4e9e084dfdfb3bdff, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.9
+      value: 4.7
       objectReference: {fileID: 0}
     - target: {fileID: 5324904286898654575, guid: bdf0eeeb844cbec4e9e084dfdfb3bdff, type: 3}
       propertyPath: m_LocalPosition.z
@@ -52183,7 +52187,7 @@ GameObject:
   - component: {fileID: 1820880405}
   - component: {fileID: 1820880404}
   - component: {fileID: 1820880403}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: timber_brace_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53400,11 +53404,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 454316770250240057, guid: 85ab33d1ac0d9314db4b9237855ffeb6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.8
+      value: 0.98
       objectReference: {fileID: 0}
     - target: {fileID: 454316770250240057, guid: 85ab33d1ac0d9314db4b9237855ffeb6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.94
+      value: 1.16
       objectReference: {fileID: 0}
     - target: {fileID: 454316770250240057, guid: 85ab33d1ac0d9314db4b9237855ffeb6, type: 3}
       propertyPath: m_LocalPosition.z

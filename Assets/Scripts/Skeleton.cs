@@ -113,6 +113,8 @@ public class Skeleton : MonoBehaviour //arranca en el 27
         anim.SetBool("disparando", true);
         yield return new WaitForSeconds(1.42f); //tiempo entre cada flecha
         anim.SetBool("disparando", false);
+        //53 para mejorar la direccion de la flecha
+        direccionFlecha = (player.transform.position - transform.position).normalized * distanciaDeteccionFlecha;
         direccionFlecha = direccionFlecha.normalized;
 
         //instanciamos la flecha en la posición actual del objeto
@@ -142,6 +144,19 @@ public class Skeleton : MonoBehaviour //arranca en el 27
         else
         {
             StartCoroutine(AgitarCamara(0.1f));
+            //53 lo quitamos de aqui pa ponerlo en la funcion Morir() y corregir el tembleque tras matar skeleton
+            /*velocidadMovimiento = 0;
+            rb.velocity = Vector2.zero;
+            Destroy(this.gameObject, 0.2f);
+            */
+        }
+    }
+
+    //53 para corregir que cuando matas skeleton se quede el temblor de camara
+    private void Morir()
+    {
+        if (vidas <= 0)
+        {
             velocidadMovimiento = 0;
             rb.velocity = Vector2.zero;
             Destroy(this.gameObject, 0.2f);
@@ -154,6 +169,8 @@ public class Skeleton : MonoBehaviour //arranca en el 27
         cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 5;
         yield return new WaitForSeconds(tiempo);
         cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
+        //53 para corregir que cuando matas skeleton se quede el temblor de camara
+        Morir();
     }
 
     private IEnumerator EfectoDaño()

@@ -138,6 +138,16 @@ public class Bat : MonoBehaviour
         }
         else
         {
+            //53 comentamos para corregir mov de camara tras matar bixo
+            //Destroy(gameObject, 0.2f);
+        }
+    }
+
+    //53 para corregir mov de camara tras matar bixo
+    private void Morir()
+    {
+        if (vidas <= 0)
+        {
             Destroy(gameObject, 0.2f);
         }
     }
@@ -149,6 +159,8 @@ public class Bat : MonoBehaviour
         cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 5;
         yield return new WaitForSeconds(tiempo);
         cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
+        //53
+        Morir();
     }
 
     //24

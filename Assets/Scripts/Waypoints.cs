@@ -157,6 +157,19 @@ public class Waypoints : MonoBehaviour //31
         else
         {
             StartCoroutine(AgitarCamara(0.1f));
+            //53 pegamos en Morir() para corregir tembleke continuo cuando matar bixo
+            /*velocidadDesplazamiento = 0;
+            rb.velocity = Vector2.zero;
+            Destroy(this.gameObject, 0.2f);
+            */
+        }
+    }
+
+    //53 para corregir tembleke continuo cuando matar bixo
+    private void Morir()
+    {
+        if (vidas <= 0)
+        {
             velocidadDesplazamiento = 0;
             rb.velocity = Vector2.zero;
             Destroy(this.gameObject, 0.2f);
@@ -169,6 +182,8 @@ public class Waypoints : MonoBehaviour //31
         cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 5;
         yield return new WaitForSeconds(tiempo);
         cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
+        //53 para corregir tembleke continuo cuando matar bixo
+        Morir();
     }
 
     private IEnumerator EfectoDaño()

@@ -268,7 +268,7 @@ public class PlayerController : MonoBehaviour
     //53 para el retroceso
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("enemigo"))
+        if (collision.gameObject.CompareTag("Enemigo"))
         {
             if (esInmortal)
             {
