@@ -654,6 +654,7 @@ public class PlayerController : MonoBehaviour
         if(collisionDerecha != null)
         {
             enMuro = !collisionDerecha.CompareTag("Plataforma");
+            //enEscalera = !collisionDerecha.CompareTag("Escalera");
         }
         else if(collisionIzquierda != null)
         {
