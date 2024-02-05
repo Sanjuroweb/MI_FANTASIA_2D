@@ -55,8 +55,9 @@ public class PlayerController : MonoBehaviour
     public bool esInmortal; //30
     public bool aplicarFuerza; //30
     public bool terminandoMapa; //47
+    public bool enEscalera;
     private bool agachandose; //50
-
+    private bool subirEscalera;
 
     [Header("Movimientos")]
     public float x;  //cuando pulsamos izquierda es negativo, y a derecha es`positivo
@@ -449,6 +450,7 @@ public class PlayerController : MonoBehaviour
 
         //22
         agarrarse = enMuro && Input.GetKey(KeyCode.LeftShift);
+        subirEscalera = enEscalera && Input.GetKey(KeyCode.UpArrow);
 
         //22
         //enSuelo añadido en 25 para corregir la doble animacion al pegarse al muro
@@ -654,11 +656,12 @@ public class PlayerController : MonoBehaviour
         if(collisionDerecha != null)
         {
             enMuro = !collisionDerecha.CompareTag("Plataforma");
-            //enEscalera = !collisionDerecha.CompareTag("Escalera");
+            enEscalera = collisionDerecha.CompareTag("Escalera");
         }
         else if(collisionIzquierda != null)
         {
             enMuro = !collisionIzquierda.CompareTag("Plataforma");
+            enEscalera = collisionIzquierda.CompareTag("Escalera");
         }
         else
         {

@@ -11,6 +11,7 @@ TagManager:
   - Moneda
   - PowerUp
   - Checkpoint
+  - Escalera
   layers:
   - Default
   - TransparentFX
