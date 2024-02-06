@@ -58,7 +58,12 @@ public class PlayerController : MonoBehaviour
     public bool enEscalera;
     private bool agachandose; //50
     private bool subirEscalera;
+    private float gravedadInicial; //internet
+    private bool escalando;//internet
 
+    [Header("Escalar")]
+    [SerializeField] private float velocidadEscalar;
+   
     [Header("Movimientos")]
     public float x;  //cuando pulsamos izquierda es negativo, y a derecha es`positivo
     public float y; //cuando pulsamos abajo es negativo, y a arriba es`positivo
@@ -74,6 +79,28 @@ public class PlayerController : MonoBehaviour
 
         velocidadDeMovimientoAuxiliar = velocidaDeMovimiento; //50
         collider = GetComponent<CapsuleCollider2D>();
+    }
+
+    //internet
+    private void escalarEscalera()
+    {
+        if (collider.CompareTag("Escalera"))
+        {
+            Debug.Log("TOCA ESCALERA");
+        }
+        //if ((direccion.y != 0 || escalando) && (collider.IsTouchingLayers(LayerMask.GetMask("Escaleras"))))
+        if ((direccion.y != 0 || escalando) && (collider.CompareTag("Escalera")))
+        {
+            Vector2 velocidadSubida = new Vector2(rb.velocity.x, direccion.y * velocidadEscalar);
+            rb.velocity = velocidadSubida;
+            rb.gravityScale = 0;
+            escalando = true;
+        }
+        else
+        {
+            rb.gravityScale = 3;
+            escalando = false;
+        }
     }
 
     //creamos funcion para añadirlo al evento dentro de atacarA 25
@@ -190,6 +217,8 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(-direccionDaño * 25, ForceMode2D.Impulse);
             aplicarFuerza = false;
         }
+
+        escalarEscalera(); //internet
     }
 
     //30
@@ -250,8 +279,14 @@ public class PlayerController : MonoBehaviour
         //47 hemos metido aqui dentro el movimiento y agarre
         if (!terminandoMapa)
         {
+            if (collider.gameObject.CompareTag("Escalera"))
+            {
+                Debug.Log("TOCA ESCALERA");
+            }
             Movimiento();
             Agarres();
+
+            //escalarEscalera();
         }
         else
         {
@@ -277,7 +312,18 @@ public class PlayerController : MonoBehaviour
                 Physics2D.IgnoreCollision(ultimoEnemigo.GetComponent<Collider2D>(), GetComponent<Collider2D>(), true);
             }
         }
+
+        
     }
+
+    //yo
+    /*private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Escalera"))
+        {
+            Debug.Log("TOCA ESCALERA");
+        }
+    }*/
 
     //50
     private void Agacharse()
@@ -651,21 +697,39 @@ public class PlayerController : MonoBehaviour
         //35 tenemos que verificar que no sea una plataforma, para que no escale en las plataformas 35
         Collider2D collisionDerecha = Physics2D.OverlapCircle((Vector2)transform.position + derecha, radioDeColision, layerPiso);
         Collider2D collisionIzquierda = Physics2D.OverlapCircle((Vector2)transform.position + izquierda, radioDeColision, layerPiso);
+        //me
+        Collider2D collision = Physics2D.OverlapCircle((Vector2)transform.position, radioDeColision, layerPiso);
 
         //tenemos que verificar si tiene el tag plataforma para que no escale 35
         if(collisionDerecha != null)
         {
-            enMuro = !collisionDerecha.CompareTag("Plataforma");
-            enEscalera = collisionDerecha.CompareTag("Escalera");
+            //enMuro = !collisionDerecha.CompareTag("Plataforma") || !collisionDerecha.CompareTag("Escalera");
+            if(!collisionDerecha.CompareTag("Plataforma") || !collisionDerecha.CompareTag("Escalera"))
+            {
+                enMuro = true;
+            }
         }
         else if(collisionIzquierda != null)
         {
-            enMuro = !collisionIzquierda.CompareTag("Plataforma");
-            enEscalera = collisionIzquierda.CompareTag("Escalera");
+            //enMuro = !collisionIzquierda.CompareTag("Plataforma") || !collisionIzquierda.CompareTag("Escalera");
+            if (!collisionDerecha.CompareTag("Plataforma") || !collisionDerecha.CompareTag("Escalera"))
+            {
+                enMuro = true;
+            }
         }
         else
         {
             enMuro = false;
+        }
+
+        //me
+        if(collision != null)
+        {
+            enEscalera = collision.CompareTag("Escalera");
+        }
+        else
+        {
+            enEscalera = false;
         }
 
         //tenemos que ver si el muro con el que estoy colisionando es a la derecha o a la izquierda 22
