@@ -12,6 +12,7 @@ TagManager:
   - PowerUp
   - Checkpoint
   - Escalera
+  - Muro
   layers:
   - Default
   - TransparentFX
@@ -84,6 +85,12 @@ TagManager:
     locked: 0
   - name: Character
     uniqueID: 2050349945
+    locked: 0
+  - name: Cercano2
+    uniqueID: 4253720069
+    locked: 0
+  - name: Cercano1
+    uniqueID: 4167029355
     locked: 0
   - name: UI
     uniqueID: 2583096133

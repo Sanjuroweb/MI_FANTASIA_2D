@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private Animator anim;
     public Vector2 direccion;
+    public Vector2 direccionRaw; //me
+    public GameObject bulletPref; //me
     private CinemachineVirtualCamera cm; //17
     private Vector2 direccionMovimiento; // le damos el valor en la funcion caminar 19
     private Vector2 direccionDaño; //30
@@ -60,6 +62,8 @@ public class PlayerController : MonoBehaviour
     private bool subirEscalera;
     private float gravedadInicial; //internet
     private bool escalando;//internet
+    private bool lanzandoBola; //me
+    private bool botonPresionado;
 
     [Header("Escalar")]
     [SerializeField] private float velocidadEscalar;
@@ -67,6 +71,8 @@ public class PlayerController : MonoBehaviour
     [Header("Movimientos")]
     public float x;  //cuando pulsamos izquierda es negativo, y a derecha es`positivo
     public float y; //cuando pulsamos abajo es negativo, y a arriba es`positivo
+
+    [SerializeField] private ParticleSystem particulas; //me, www.youtube.com/watch?v=sxU0LpR1CY8
 
     //configuraciones iniciales, inicializar variables, o para realizar otras tareas que deben llevarse a cabo antes de que comience el juego.
     private void Awake()
@@ -89,18 +95,30 @@ public class PlayerController : MonoBehaviour
             Debug.Log("TOCA ESCALERA");
         }
         //if ((direccion.y != 0 || escalando) && (collider.IsTouchingLayers(LayerMask.GetMask("Escaleras"))))
-        if ((direccion.y != 0 || escalando) && (collider.CompareTag("Escalera")))
+        //if ((direccion.y != 0 || escalando) && (collider.CompareTag("Escalera")))
+        if ((direccion.y != 0 || escalando) && (enEscalera))
         {
             Vector2 velocidadSubida = new Vector2(rb.velocity.x, direccion.y * velocidadEscalar);
             rb.velocity = velocidadSubida;
             rb.gravityScale = 0;
             escalando = true;
+            Debug.Log("PAD HACIA ARRIBA Y ENESCALERA");
+            Debug.Log(rb.velocity);
         }
         else
         {
             rb.gravityScale = 3;
             escalando = false;
         }
+    }
+
+    //me
+    private void LanzarBola()
+    {
+            Instantiate(bulletPref, transform.position, Quaternion.identity);
+            Debug.Log("Lanzando bola");
+            //hud.municion--;
+            //GameObject.Find("SoundManager").GetComponent<soundManager>().PlayAudio("disparoPlayer");
     }
 
     //creamos funcion para añadirlo al evento dentro de atacarA 25
@@ -218,7 +236,7 @@ public class PlayerController : MonoBehaviour
             aplicarFuerza = false;
         }
 
-        escalarEscalera(); //internet
+        //escalarEscalera(); //internet
     }
 
     //30
@@ -279,14 +297,23 @@ public class PlayerController : MonoBehaviour
         //47 hemos metido aqui dentro el movimiento y agarre
         if (!terminandoMapa)
         {
-            if (collider.gameObject.CompareTag("Escalera"))
-            {
-                Debug.Log("TOCA ESCALERA");
-            }
             Movimiento();
             Agarres();
+            probarControles();
 
-            //escalarEscalera();
+            escalarEscalera();
+            if (Input.GetKey(KeyCode.JoystickButton2))
+            {
+                if (!botonPresionado)
+                {
+                    botonPresionado = true;
+                    LanzarBola();
+                }
+            }
+            else
+            {
+                botonPresionado = false;
+            }
         }
         else
         {
@@ -339,7 +366,7 @@ public class PlayerController : MonoBehaviour
     //el vector direccion es la dir a donde vamos a atacar
     private void Atacar(Vector2 direccion)
     {
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.JoystickButton0)) //Atacarr
         {
             if(!estaAtacando && !haciendoDash)
             {
@@ -467,7 +494,7 @@ public class PlayerController : MonoBehaviour
 
         //te da la direccion del muñeco!!!
         direccion = new Vector2(x, y);
-        Vector2 direccionRaw = new Vector2(xRaw, yRaw);
+        direccionRaw = new Vector2(xRaw, yRaw);
 
         //Caminar(direccion);
         Caminar();
@@ -495,13 +522,36 @@ public class PlayerController : MonoBehaviour
         }
 
         //22
-        agarrarse = enMuro && Input.GetKey(KeyCode.LeftShift);
-        subirEscalera = enEscalera && Input.GetKey(KeyCode.UpArrow);
+        agarrarse = enMuro && Input.GetKey(KeyCode.JoystickButton7);
+        subirEscalera = enEscalera && (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.JoystickButton5));
 
-        //22
+        //22 l
         //enSuelo añadido en 25 para corregir la doble animacion al pegarse al muro
         //al final ponemos agarrarse 25
         if (agarrarse && !enSuelo) 
+        {
+            anim.SetBool("escalar", true);
+            if (rb.velocity == Vector2.zero)
+            //if ((rb.velocity.x < 10 && rb.velocity.x > -10) || rb.velocity == Vector2.zero) //LINEA PROPIA para probar que al pegarse al muro no haga 2 animaciones
+            {
+                //dentro de escalar tenemos que decirle cual animacion hacer si agarrarse o escalar
+                anim.SetFloat("velocidad", 0);
+            }
+            else
+            //else if(agarrarse && rb.velocity.y > 1) //LINEA PROPIA para probar que al pegarse al muro no haga 2 animaciones
+            {
+                //hara anim de escalar mientras velocidad es 1
+                anim.SetFloat("velocidad", 1);
+            }
+        }
+        else
+        {
+            anim.SetBool("escalar", false);
+            //le damos valor por defecto a la velocidad
+            anim.SetFloat("velocidad", 0);
+
+        //me, para subir escalera
+        } if (subirEscalera && !enSuelo) 
         {
             anim.SetBool("escalar", true);
             if (rb.velocity == Vector2.zero)
@@ -548,6 +598,31 @@ public class PlayerController : MonoBehaviour
         else
         {
             rb.gravityScale = 3;
+
+        //me, para subir escalera
+        }if (subirEscalera && !haciendoDash)
+        {
+            //la gravedad no afectará al personaje verticalmente mientras esté agarrado a la pared
+            rb.gravityScale = 0;
+            if(x > 0.2f || x < -0.2f) //ya sea que nos movemos a dcha o izda limitaremos la velocidad en y
+                rb.velocity = new Vector2(rb.velocity.x, 0);
+            
+            //si player mueve hacia arriba asignamos 0.5f al modificador
+            float modificadorVelocidad = y > 0 ? 0.5f : 1;
+            //actualizamos la velocidad del rb
+            rb.velocity = new Vector2(rb.velocity.x, y * (velocidaDeMovimiento * modificadorVelocidad));
+
+            //para cambiar vista a donde mira el player en funcion de si esta en muro dcho o izdo
+            if(muroIzquierdo && transform.localScale.x > 0)
+            {
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            }else if(muroDerecho && transform.localScale.x < 0){
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
+        }
+        else
+        {
+            rb.gravityScale = 3;
         }
 
         //22
@@ -562,7 +637,7 @@ public class PlayerController : MonoBehaviour
 
         MejorarSalto();
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.JoystickButton1)) //Saltar
         {
             if(enSuelo)
             {
@@ -581,7 +656,7 @@ public class PlayerController : MonoBehaviour
 
         //tenemos que llamar al emit() del efecto rippley 15
         //para capar el dash, que solo se haga si ha tocado piso 25
-        if (Input.GetKeyDown(KeyCode.X) && !haciendoDash && !puedeDash)
+        if (Input.GetKeyDown(KeyCode.JoystickButton3) && !haciendoDash && !puedeDash)
         {
             //accedemos a la camara principal y al effecto con la posicion actual 15, en el 16 no aparece esta linea, la comento porsiaca
             //Camera.main.GetComponent<RippleEffect>().Emit(transform.position);
@@ -652,6 +727,8 @@ public class PlayerController : MonoBehaviour
         Saltar((Vector2.up + direccionMuro), true);
 
         saltarDeMuro = true;
+
+        particulas.Play(); //me
     }
 
     //22
@@ -680,7 +757,7 @@ public class PlayerController : MonoBehaviour
             //para mejorar la apariencia del salto y darle una fisica mas natural
             rb.velocity += Vector2.up * Physics2D.gravity.y * (5f - 1) * Time.deltaTime;
         }
-        else if((rb.velocity.y > 0) && !Input.GetKey(KeyCode.Space))
+        else if((rb.velocity.y > 0) && !Input.GetKey(KeyCode.JoystickButton1))
         {
             //para mejorar la apariencia del salto y darle una fisica mas natural
             rb.velocity += Vector2.up * Physics2D.gravity.y * (5f - 1) * Time.deltaTime;
@@ -703,29 +780,39 @@ public class PlayerController : MonoBehaviour
         //tenemos que verificar si tiene el tag plataforma para que no escale 35
         if(collisionDerecha != null)
         {
-            //enMuro = !collisionDerecha.CompareTag("Plataforma") || !collisionDerecha.CompareTag("Escalera");
-            if(!collisionDerecha.CompareTag("Plataforma") || !collisionDerecha.CompareTag("Escalera"))
+            if (collisionDerecha.CompareTag("Muro"))
             {
                 enMuro = true;
+                muroDerecho = true;
+                //tenemos que ver si el muro con el que estoy colisionando es a la derecha o a la izquierda 22
+                //muroDerecho = Physics2D.OverlapCircle((Vector2)transform.position + derecha, radioDeColision, layerPiso);
             }
         }
         else if(collisionIzquierda != null)
         {
-            //enMuro = !collisionIzquierda.CompareTag("Plataforma") || !collisionIzquierda.CompareTag("Escalera");
-            if (!collisionDerecha.CompareTag("Plataforma") || !collisionDerecha.CompareTag("Escalera"))
+            if (collisionIzquierda.CompareTag("Muro"))
             {
                 enMuro = true;
+                muroIzquierdo = true;
+                //tenemos que ver si el muro con el que estoy colisionando es a la derecha o a la izquierda 22
+                //muroIzquierdo = Physics2D.OverlapCircle((Vector2)transform.position + izquierda, radioDeColision, layerPiso);
             }
         }
         else
         {
             enMuro = false;
+            muroDerecho = false;
+            muroIzquierdo = false;
         }
 
         //me
         if(collision != null)
         {
-            enEscalera = collision.CompareTag("Escalera");
+            if (collision.CompareTag("Escalera"))
+            {
+                enEscalera = true;
+                Debug.Log("Toca Escalera desde funcion agarres()");
+            }
         }
         else
         {
@@ -733,8 +820,8 @@ public class PlayerController : MonoBehaviour
         }
 
         //tenemos que ver si el muro con el que estoy colisionando es a la derecha o a la izquierda 22
-        muroDerecho = Physics2D.OverlapCircle((Vector2)transform.position + derecha, radioDeColision, layerPiso);
-        muroIzquierdo = Physics2D.OverlapCircle((Vector2)transform.position + izquierda, radioDeColision, layerPiso);
+        //muroDerecho = Physics2D.OverlapCircle((Vector2)transform.position + derecha, radioDeColision, layerPiso);
+        //muroIzquierdo = Physics2D.OverlapCircle((Vector2)transform.position + izquierda, radioDeColision, layerPiso);
 
         //lo borramos en el 35 
         //enMuro = muroDerecho || muroIzquierdo; 
@@ -766,14 +853,14 @@ public class PlayerController : MonoBehaviour
             {
                 //Lerp interpola entre 2 vectores, o sea la velocidad actual y la otra con un tiempo que esta definifo en el 3er parametro
                 rb.velocity = Vector2.Lerp(rb.velocity,
-                    (new Vector2(direccion.x * velocidaDeMovimiento, rb.velocity.y)), Time.deltaTime / 2);
+                    (new Vector2(direccionRaw.x * velocidaDeMovimiento, rb.velocity.y)), Time.deltaTime / 2);
             }
             else
             {
                 //para que se pueda mover hay que darle valores al velocity del rigid body
                 //rb.velocity = new Vector2(direccion.x * velocidaDeMovimiento, rb.velocity.y); //eliminamos en el 22
 
-                if (direccion != Vector2.zero && !agarrarse)
+                if (direccionRaw != Vector2.zero && !agarrarse)
                 {
                     //animaciones de caer y caminar
                     if (!enSuelo)
@@ -789,18 +876,18 @@ public class PlayerController : MonoBehaviour
                         anim.SetBool("caminar", true); //13
                     }
 
-                    rb.velocity = (new Vector2(direccion.x * velocidaDeMovimiento, rb.velocity.y)); //22
+                    rb.velocity = (new Vector2(direccionRaw.x * velocidaDeMovimiento, rb.velocity.y)); //22
 
                     //para que mire a la izquierda si la direccion x es negativa
-                    if (direccion.x < 0 && transform.localScale.x > 0)
+                    if (direccionRaw.x < 0 && transform.localScale.x > 0)
                     {
-                        direccionMovimiento = DireccionAtaque(Vector2.left, direccion); //19
+                        direccionMovimiento = DireccionAtaque(Vector2.left, direccionRaw); //19
                         transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
                     }
 
-                    else if (direccion.x > 0 && transform.localScale.x < 0)
+                    else if (direccionRaw.x > 0 && transform.localScale.x < 0)
                     {
-                        direccionMovimiento = DireccionAtaque(Vector2.right, direccion); //19
+                        direccionMovimiento = DireccionAtaque(Vector2.right, direccionRaw); //19
                                                                                          //para que mire a la derecha si la direccion x es positiva
                         transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
                         //Mathf.Abs es para buscar el valor absoluto,  es para pasar de negativo a positivo sin cambiar el valor
@@ -808,9 +895,9 @@ public class PlayerController : MonoBehaviour
                 }
                 else
                 {
-                    if (direccion.y > 0 && direccion.x == 0) //19
+                    if (direccionRaw.y > 0 && direccionRaw.x == 0) //19
                     {
-                        direccionMovimiento = DireccionAtaque(direccion, Vector2.up);
+                        direccionMovimiento = DireccionAtaque(direccionRaw, Vector2.up);
                     }
                     //si no estoy moviendome no activo la anim de caminar
                     anim.SetBool("caminar", false); //13
@@ -825,5 +912,130 @@ public class PlayerController : MonoBehaviour
                 FinalizarAtaque();
             }
         }
+    }
+
+    private void probarControles()
+    {
+        if (Input.GetKey(KeyCode.JoystickButton0))
+        {
+            Debug.Log("JoystickButton0");
+        } 
+        if (Input.GetKey(KeyCode.JoystickButton1))
+        {
+            Debug.Log("JoystickButton1");
+        } 
+        if (Input.GetKey(KeyCode.JoystickButton2))
+        {
+            Debug.Log("JoystickButton2");
+        } 
+        if (Input.GetKey(KeyCode.JoystickButton3))
+        {
+            Debug.Log("JoystickButton3");
+        } 
+        if (Input.GetKey(KeyCode.JoystickButton4))
+        {
+            Debug.Log("JoystickButton4");
+        } 
+        if (Input.GetKey(KeyCode.JoystickButton5))
+        {
+            Debug.Log("JoystickButton5");
+        } 
+        if (Input.GetKey(KeyCode.JoystickButton6))
+        {
+            Debug.Log("JoystickButton6");
+        } 
+        if (Input.GetKey(KeyCode.JoystickButton7))
+        {
+            Debug.Log("JoystickButton7");
+        } 
+        if (Input.GetKey(KeyCode.JoystickButton8))
+        {
+            Debug.Log("JoystickButton8");
+        } 
+        if (Input.GetKey(KeyCode.JoystickButton9))
+        {
+            Debug.Log("JoystickButton9");
+        } 
+        if (Input.GetKey(KeyCode.JoystickButton10))
+        {
+            Debug.Log("JoystickButton10");
+        }
+        if (Input.GetKey(KeyCode.JoystickButton10))
+        {
+            Debug.Log("JoystickButton10");
+        }
+        if (Input.GetKey(KeyCode.JoystickButton11))
+        {
+            Debug.Log("JoystickButton11");
+        }
+        if (Input.GetKey(KeyCode.JoystickButton12))
+        {
+            Debug.Log("JoystickButton12");
+        }
+        if (Input.GetKey(KeyCode.JoystickButton13))
+        {
+            Debug.Log("JoystickButton13");
+        }
+        if (Input.GetKey(KeyCode.JoystickButton14))
+        {
+            Debug.Log("JoystickButton14");
+        }
+        if (Input.GetKey(KeyCode.JoystickButton15))
+        {
+            Debug.Log("JoystickButton15");
+        }
+        if (Input.GetKey(KeyCode.JoystickButton16))
+        {
+            Debug.Log("JoystickButton16");
+        }
+        if (Input.GetKey(KeyCode.JoystickButton17))
+        {
+            Debug.Log("JoystickButton17");
+        }
+        if (Input.GetKey(KeyCode.JoystickButton18))
+        {
+            Debug.Log("JoystickButton18");
+        }
+        if (Input.GetKey(KeyCode.Keypad0))
+        {
+            Debug.Log("Keypad0");
+        }
+        if (Input.GetKey(KeyCode.Keypad1))
+        {
+            Debug.Log("Keypad1");
+        }
+        if (Input.GetKey(KeyCode.Keypad2))
+        {
+            Debug.Log("Keypad2");
+        }
+        if (Input.GetKey(KeyCode.Keypad3))
+        {
+            Debug.Log("Keypad3");
+        }
+        if (Input.GetKey(KeyCode.Keypad4))
+        {
+            Debug.Log("Keypad4");
+        }
+        if (Input.GetKey(KeyCode.Keypad5))
+        {
+            Debug.Log("Keypad5");
+        }
+        if (Input.GetKey(KeyCode.Keypad6))
+        {
+            Debug.Log("Keypad6");
+        }
+        if (Input.GetKey(KeyCode.Keypad7))
+        {
+            Debug.Log("Keypad7");
+        }
+        if (Input.GetKey(KeyCode.Keypad8))
+        {
+            Debug.Log("Keypad8");
+        }
+        if (Input.GetKey(KeyCode.Keypad9))
+        {
+            Debug.Log("Keypad9");
+        }
+        
     }
 }

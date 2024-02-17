@@ -16,7 +16,7 @@ public class Skeleton : MonoBehaviour //arranca en el 27
     public float distanciaDeteccionJugador = 17; //27
     public float distanciaDeteccionFlecha = 11; //27
     public GameObject flecha; //27
-    public float fuerzaLanzamiento = 5; //27
+    public float fuerzaLanzamiento = 1; //27
     public float velocidadMovimiento; //27
     public int vidas = 3; //27
     public bool lanzandoFlecha; //27
@@ -111,7 +111,7 @@ public class Skeleton : MonoBehaviour //arranca en el 27
     {
         lanzandoFlecha = true;
         anim.SetBool("disparando", true);
-        yield return new WaitForSeconds(1.42f); //tiempo entre cada flecha
+        yield return new WaitForSeconds(3f); //tiempo entre cada flecha
         anim.SetBool("disparando", false);
         //53 para mejorar la direccion de la flecha
         direccionFlecha = (player.transform.position - transform.position).normalized * distanciaDeteccionFlecha;
