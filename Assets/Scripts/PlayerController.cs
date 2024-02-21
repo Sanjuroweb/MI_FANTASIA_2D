@@ -654,6 +654,23 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.Space)) //Saltar
+        {
+            if (enSuelo)
+            {
+                anim.SetBool("saltar", true); //modificamos el booleano saltar para las animaciones 13
+                Saltar();
+            }
+
+            //22
+            if (enMuro && !enSuelo)
+            {
+                anim.SetBool("escalar", false);
+                anim.SetBool("saltar", true);
+                SaltarDesdeMuro();
+            }
+        }
+
         //tenemos que llamar al emit() del efecto rippley 15
         //para capar el dash, que solo se haga si ha tocado piso 25
         if (Input.GetKeyDown(KeyCode.JoystickButton3) && !haciendoDash && !puedeDash)
@@ -758,6 +775,11 @@ public class PlayerController : MonoBehaviour
             rb.velocity += Vector2.up * Physics2D.gravity.y * (5f - 1) * Time.deltaTime;
         }
         else if((rb.velocity.y > 0) && !Input.GetKey(KeyCode.JoystickButton1))
+        {
+            //para mejorar la apariencia del salto y darle una fisica mas natural
+            rb.velocity += Vector2.up * Physics2D.gravity.y * (5f - 1) * Time.deltaTime;
+        }
+        else if ((rb.velocity.y > 0) && !Input.GetKey(KeyCode.Space))
         {
             //para mejorar la apariencia del salto y darle una fisica mas natural
             rb.velocity += Vector2.up * Physics2D.gravity.y * (5f - 1) * Time.deltaTime;
