@@ -41,7 +41,7 @@ public class Skeleton : MonoBehaviour //arranca en el 27
     // Update is called once per frame
     void Update()
     {
-        //calculamos direccion entre skeleton y player 27
+        //calculamos direccion entre skeleton y player para obtener un vector que siempre apunte al player 27
         Vector2 direccion = (player.transform.position - transform.position).normalized * distanciaDeteccionFlecha;
         //para ver que se esta detectando la direccion correctamente
         Debug.DrawRay(transform.position, direccion, Color.red);

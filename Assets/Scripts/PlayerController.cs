@@ -739,13 +739,20 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
 
+        float horizontal = Input.GetAxis("Horizontal"); //me
+        float vertical = Input.GetAxis("Vertical"); //me
+
+        // Crear una dirección de salto basada en los valores del joystick
+        Vector2 direccionSalto = new Vector2(horizontal, vertical); //me
+
         anim.SetBool("saltar", true);
         anim.SetBool("escalar", false);
-        Saltar((Vector2.up + direccionMuro), true);
+        //Saltar((Vector2.up + direccionMuro), true);
+        Saltar(direccionSalto, true); //me
 
         saltarDeMuro = true;
 
-        particulas.Play(); //me
+        //particulas.Play(); //me
     }
 
     //22
@@ -860,7 +867,8 @@ public class PlayerController : MonoBehaviour
     //22
     public void Saltar(Vector2 direccionSalto, bool muro)
     {
-        rb.velocity = new Vector2(rb.velocity.x, 0); //obtenemos velocidad del rigidbody
+        //rb.velocity = new Vector2(rb.velocity.x, 0); //obtenemos velocidad del rigidbody
+        rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y); //obtenemos velocidad del rigidbody
         rb.velocity += direccionSalto * fuerzaDeSalto; //sumamos la velocidad del rb al producto del 
     }
 
