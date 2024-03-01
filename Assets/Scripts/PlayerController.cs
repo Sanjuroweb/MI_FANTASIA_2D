@@ -739,16 +739,16 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
 
-        float horizontal = Input.GetAxis("Horizontal"); //me
-        float vertical = Input.GetAxis("Vertical"); //me
+        //float horizontal = Input.GetAxis("Horizontal"); //me
+        //float vertical = Input.GetAxis("Vertical"); //me
 
         // Crear una dirección de salto basada en los valores del joystick
-        Vector2 direccionSalto = new Vector2(horizontal, vertical); //me
+        //Vector2 direccionSalto = new Vector2(horizontal, vertical); //me
 
         anim.SetBool("saltar", true);
         anim.SetBool("escalar", false);
-        //Saltar((Vector2.up + direccionMuro), true);
-        Saltar(direccionSalto, true); //me
+        Saltar((Vector2.up + direccionMuro), true);
+        //Saltar(direccionSalto, true); //me
 
         saltarDeMuro = true;
 
