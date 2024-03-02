@@ -577,10 +577,14 @@ public class PlayerController : MonoBehaviour
         //22
         if (agarrarse && !haciendoDash)
         {
+            Debug.Log("AGARRADO SIN HACER DASH");
             //la gravedad no afectará al personaje verticalmente mientras esté agarrado a la pared
             rb.gravityScale = 0;
-            if(x > 0.2f || x < -0.2f) //ya sea que nos movemos a dcha o izda limitaremos la velocidad en y
+            if (x > 0.2f || x < -0.2f)//ya sea que nos movemos a dcha o izda limitaremos la velocidad en y
+            {
+                Debug.Log("MOVIENDO JOYSTICK EN X IF(x > 0.2f || x < -0.2f)");
                 rb.velocity = new Vector2(rb.velocity.x, 0);
+            }
             
             //si player mueve hacia arriba asignamos 0.5f al modificador
             float modificadorVelocidad = y > 0 ? 0.5f : 1;
@@ -628,9 +632,12 @@ public class PlayerController : MonoBehaviour
         //22
         if(enMuro && !enSuelo)
         {
+            Debug.Log("(enMuro && !enSuelo) DENTRO DE MOVIMIENTO()");
             //para que al saltar de un muro a otro haga la animacion de escalar 25
             anim.SetBool("escalar", true);
 
+            //cuando soltamos el boton de agarrar se llama a DeslizarPared()
+            //player empezara a bajar deslizando a la velocidade de "velocidadDeslizar"
             if (x != 0 && !agarrarse)
                 DeslizarPared();
         }
@@ -715,9 +722,10 @@ public class PlayerController : MonoBehaviour
     }
 
     //22
+    //cuando soltamos el boton de agarrar, player empezara a bajar deslizando a la velocidade de "velocidadDeslizar"
     private void DeslizarPared()
     {
-        if (puedeMover)
+        if (puedeMover) 
             rb.velocity = new Vector2(rb.velocity.x, -velocidadDeslizar);
     }
 
@@ -739,16 +747,16 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
 
-        //float horizontal = Input.GetAxis("Horizontal"); //me
-        //float vertical = Input.GetAxis("Vertical"); //me
+        float horizontal = Input.GetAxis("Horizontal"); //me
+        float vertical = Input.GetAxis("Vertical"); //me
 
         // Crear una dirección de salto basada en los valores del joystick
-        //Vector2 direccionSalto = new Vector2(horizontal, vertical); //me
+        Vector2 direccionSalto = new Vector2(horizontal, vertical); //me
 
         anim.SetBool("saltar", true);
         anim.SetBool("escalar", false);
-        Saltar((Vector2.up + direccionMuro), true);
-        //Saltar(direccionSalto, true); //me
+        //Saltar((Vector2.up + direccionMuro), true);
+        Saltar(direccionSalto, true, direccionMuro); //me
 
         saltarDeMuro = true;
 
@@ -865,8 +873,15 @@ public class PlayerController : MonoBehaviour
     }
 
     //22
-    public void Saltar(Vector2 direccionSalto, bool muro)
+    public void Saltar(Vector2 direccionSalto, bool muro, Vector2 direccionMuro)
     {
+        if(direccionMuro.x > 0 && direccionSalto.x < 0)
+        {
+            Debug.Log("PROBANDO SALTO");
+            rb.velocity = new Vector2(0, rb.velocity.y);
+            rb.velocity += direccionSalto * fuerzaDeSalto;
+        }
+
         //rb.velocity = new Vector2(rb.velocity.x, 0); //obtenemos velocidad del rigidbody
         rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y); //obtenemos velocidad del rigidbody
         rb.velocity += direccionSalto * fuerzaDeSalto; //sumamos la velocidad del rb al producto del 

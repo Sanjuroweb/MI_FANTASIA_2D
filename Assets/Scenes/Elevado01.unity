@@ -78266,6 +78266,10 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 18377903935756256, guid: 85ab33d1ac0d9314db4b9237855ffeb6, type: 3}
+      propertyPath: velocidadDeslizar
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 18377903935756256, guid: 85ab33d1ac0d9314db4b9237855ffeb6, type: 3}
       propertyPath: tiempoInmortalidad
       value: 3
       objectReference: {fileID: 0}
