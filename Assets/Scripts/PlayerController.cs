@@ -28,6 +28,9 @@ public class PlayerController : MonoBehaviour
     [Header("Estadisticas")]
     public float velocidaDeMovimiento = 10;
     public float fuerzaDeSalto = 5;
+    public float fuerzaDeSaltoDesdeMuro = 5; //me
+    public float fuerzaDeSaltoDesdeMuroX = 5; //me
+    public float fuerzaDeSaltoDesdeMuroY = 5; //me
     public float velocidadDash =20; //16
     public float velocidadDeslizar; //22
     public int vidas = 3; //30
@@ -874,17 +877,21 @@ public class PlayerController : MonoBehaviour
 
     //22
     public void Saltar(Vector2 direccionSalto, bool muro, Vector2 direccionMuro)
+    //public void Saltar(Vector2 direccionSalto, bool muro)
     {
+        Debug.Log(direccionSalto.x +" "+ direccionSalto.y);
         if(direccionMuro.x > 0 && direccionSalto.x < 0)
         {
             Debug.Log("PROBANDO SALTO");
-            rb.velocity = new Vector2(0, rb.velocity.y);
-            rb.velocity += direccionSalto * fuerzaDeSalto;
+            rb.velocity = new Vector2(-rb.velocity.y* fuerzaDeSaltoDesdeMuro, rb.velocity.y* fuerzaDeSaltoDesdeMuro);
+            //rb.velocity += direccionSalto * fuerzaDeSalto;
         }
-
-        //rb.velocity = new Vector2(rb.velocity.x, 0); //obtenemos velocidad del rigidbody
-        rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y); //obtenemos velocidad del rigidbody
-        rb.velocity += direccionSalto * fuerzaDeSalto; //sumamos la velocidad del rb al producto del 
+        else
+        {
+            //rb.velocity = new Vector2(rb.velocity.x, 0); //obtenemos velocidad del rigidbody
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y); //obtenemos velocidad del rigidbody
+            rb.velocity += direccionSalto * fuerzaDeSaltoDesdeMuro; //sumamos la velocidad del rb al producto del 
+        }
     }
 
     //para poder caminar y para las animaciones
