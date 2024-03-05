@@ -29,8 +29,8 @@ public class PlayerController : MonoBehaviour
     public float velocidaDeMovimiento = 10;
     public float fuerzaDeSalto = 5;
     public float fuerzaDeSaltoDesdeMuro = 5; //me
-    public float fuerzaDeSaltoDesdeMuroX = 5; //me
-    public float fuerzaDeSaltoDesdeMuroY = 5; //me
+    public float fuerzaDeSaltoDesdeMuroX = 12; //me
+    public float fuerzaDeSaltoDesdeMuroY = 12; //me
     public float velocidadDash =20; //16
     public float velocidadDeslizar; //22
     public int vidas = 3; //30
@@ -750,8 +750,8 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
 
-        float horizontal = Input.GetAxis("Horizontal"); //me
-        float vertical = Input.GetAxis("Vertical"); //me
+        float horizontal = Input.GetAxisRaw("Horizontal"); //me
+        float vertical = Input.GetAxisRaw("Vertical"); //me
 
         // Crear una dirección de salto basada en los valores del joystick
         Vector2 direccionSalto = new Vector2(horizontal, vertical); //me
@@ -883,14 +883,20 @@ public class PlayerController : MonoBehaviour
         if(direccionMuro.x > 0 && direccionSalto.x < 0)
         {
             Debug.Log("PROBANDO SALTO");
-            rb.velocity = new Vector2(-rb.velocity.y* fuerzaDeSaltoDesdeMuro, rb.velocity.y* fuerzaDeSaltoDesdeMuro);
+            //rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y);
+            //rb.velocity = new Vector2(20 * direccionSalto.x, 20);
             //rb.velocity += direccionSalto * fuerzaDeSalto;
+            rb.velocity = new Vector2(rb.velocity.x, 0); 
+            rb.velocity += Vector2.up * fuerzaDeSalto; 
         }
         else
         {
             //rb.velocity = new Vector2(rb.velocity.x, 0); //obtenemos velocidad del rigidbody
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y); //obtenemos velocidad del rigidbody
-            rb.velocity += direccionSalto * fuerzaDeSaltoDesdeMuro; //sumamos la velocidad del rb al producto del 
+            //rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y); //obtenemos velocidad del rigidbody
+            //rb.velocity += direccionSalto * fuerzaDeSaltoDesdeMuro; //sumamos la velocidad del rb al producto del
+            //rb.velocity = new Vector2(20 * direccionSalto.x, 20);
+            rb.velocity = new Vector2(rb.velocity.x, 0);
+            rb.velocity += Vector2.up * fuerzaDeSalto;
         }
     }
 
@@ -904,8 +910,7 @@ public class PlayerController : MonoBehaviour
             if (saltarDeMuro) //es la veloc que obtine cuando salta del muro
             {
                 //Lerp interpola entre 2 vectores, o sea la velocidad actual y la otra con un tiempo que esta definifo en el 3er parametro
-                rb.velocity = Vector2.Lerp(rb.velocity,
-                    (new Vector2(direccionRaw.x * velocidaDeMovimiento, rb.velocity.y)), Time.deltaTime / 2);
+                //rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(direccionRaw.x * velocidaDeMovimiento, rb.velocity.y)), Time.deltaTime / 2);
             }
             else
             {
