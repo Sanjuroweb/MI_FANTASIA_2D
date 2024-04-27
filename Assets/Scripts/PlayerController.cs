@@ -35,6 +35,8 @@ public class PlayerController : MonoBehaviour
     public float velocidadDeslizar; //22
     public int vidas = 3; //30
     public float tiempoInmortalidad; //30
+    public int saltospermitidos = 1;
+    public int saltosRestantes;
 
     [Header("Colisiones")]
     public LayerMask layerPiso;
@@ -60,7 +62,10 @@ public class PlayerController : MonoBehaviour
     public bool esInmortal; //30
     public bool aplicarFuerza; //30
     public bool terminandoMapa; //47
-    public bool enEscalera;
+    public bool enEscalera; //me
+    public bool enAireDesdeMuro; //me 
+
+
     private bool agachandose; //50
     private bool subirEscalera;
     private float gravedadInicial; //internet
@@ -305,6 +310,7 @@ public class PlayerController : MonoBehaviour
             probarControles();
 
             escalarEscalera();
+
             if (Input.GetKey(KeyCode.JoystickButton2))
             {
                 if (!botonPresionado)
@@ -317,6 +323,15 @@ public class PlayerController : MonoBehaviour
             {
                 botonPresionado = false;
             }
+
+            if (enAireDesdeMuro)
+            {
+                float movimientoHorizontal = Input.GetAxis("Horizontal"); // Obtener entrada horizontal del jugador
+
+                // Aplicar movimiento horizontal mientras estás en el aire
+                rb.velocity = new Vector2(movimientoHorizontal * 12, rb.velocity.y);
+                Debug.Log("EN AIRE DESDE MURO DESDE UPDATE");
+            }
         }
         else
         {
@@ -328,6 +343,11 @@ public class PlayerController : MonoBehaviour
         {
             Physics2D.IgnoreCollision(ultimoEnemigo.GetComponent<Collider2D>(), GetComponent<Collider2D>(), false);
             ultimoEnemigo = null;
+        }
+
+        if (enSuelo)
+        {
+            saltosRestantes = saltospermitidos;
         }
     }
 
@@ -522,6 +542,7 @@ public class PlayerController : MonoBehaviour
         if(enSuelo && !haciendoDash)
         {
             saltarDeMuro = false;
+            enAireDesdeMuro = false; //me
         }
 
         //22
@@ -633,7 +654,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //22
-        if(enMuro && !enSuelo)
+        /*if(enMuro && !enSuelo)
         {
             Debug.Log("(enMuro && !enSuelo) DENTRO DE MOVIMIENTO()");
             //para que al saltar de un muro a otro haga la animacion de escalar 25
@@ -643,23 +664,30 @@ public class PlayerController : MonoBehaviour
             //player empezara a bajar deslizando a la velocidade de "velocidadDeslizar"
             if (x != 0 && !agarrarse)
                 DeslizarPared();
-        }
+        }*/
 
         MejorarSalto();
 
-        if (Input.GetKeyDown(KeyCode.JoystickButton1)) //Saltar
+        if (Input.GetKeyDown(KeyCode.JoystickButton1) && saltosRestantes > 0) //Saltar
         {
             if(enSuelo)
             {
                 anim.SetBool("saltar", true); //modificamos el booleano saltar para las animaciones 13
                 Saltar();
+                saltosRestantes--;
+            }
+
+            if (!enSuelo)
+            {
+                Saltar();
+                saltosRestantes--;
             }
 
             //22
             if(enMuro && !enSuelo)
             {
-                anim.SetBool("escalar", false);
-                anim.SetBool("saltar", true);
+                //anim.SetBool("escalar", false);
+                //anim.SetBool("saltar", true);
                 SaltarDesdeMuro();
             }
         }
@@ -722,6 +750,11 @@ public class PlayerController : MonoBehaviour
         //{
         //    anim.SetBool("saltar", true); //13 lo sustutiumos por un evento
         //}
+
+        if (enMuro || enEscalera || enSuelo) 
+        {
+            enAireDesdeMuro = false;
+        }
     }
 
     //22
@@ -735,29 +768,29 @@ public class PlayerController : MonoBehaviour
     //22
     private void SaltarDesdeMuro()
     {
-        StopCoroutine(DeshabilitarMovimiento(0));
-        StartCoroutine(DeshabilitarMovimiento(0.1f));
+        //StopCoroutine(DeshabilitarMovimiento(0));
+        //StartCoroutine(DeshabilitarMovimiento(0.1f));
 
         Vector2 direccionMuro = muroDerecho ? Vector2.left : Vector2.right;
 
         //se cambia direccion.x por direccionMuro.x 25
         //para cambiar la direccion del player al saltar de un muro
-        if (direccionMuro.x < 0 && transform.localScale.x > 0)
+        /*if (direccionMuro.x < 0 && transform.localScale.x > 0)
         {
             transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         }else if(direccionMuro.x > 0 && transform.localScale.x < 0)
         {
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        }
+        }*/
 
-        float horizontal = Input.GetAxisRaw("Horizontal"); //me
-        float vertical = Input.GetAxisRaw("Vertical"); //me
+        float horizontal = Input.GetAxis("Horizontal"); //me
+        float vertical = Input.GetAxis("Vertical"); //me
 
         // Crear una dirección de salto basada en los valores del joystick
         Vector2 direccionSalto = new Vector2(horizontal, vertical); //me
 
-        anim.SetBool("saltar", true);
-        anim.SetBool("escalar", false);
+        //anim.SetBool("saltar", true);
+        //anim.SetBool("escalar", false);
         //Saltar((Vector2.up + direccionMuro), true);
         Saltar(direccionSalto, true, direccionMuro); //me
 
@@ -879,15 +912,23 @@ public class PlayerController : MonoBehaviour
     public void Saltar(Vector2 direccionSalto, bool muro, Vector2 direccionMuro)
     //public void Saltar(Vector2 direccionSalto, bool muro)
     {
-        Debug.Log(direccionSalto.x +" "+ direccionSalto.y);
+        rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y);
+        rb.velocity += Vector2.up * 6;
+
+        CambiarDireccionEnAire();
+
+        /*Debug.Log(direccionSalto.x +" "+ direccionSalto.y);
         if(direccionMuro.x > 0 && direccionSalto.x < 0)
         {
             Debug.Log("PROBANDO SALTO");
             //rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y);
             //rb.velocity = new Vector2(20 * direccionSalto.x, 20);
             //rb.velocity += direccionSalto * fuerzaDeSalto;
-            rb.velocity = new Vector2(rb.velocity.x, 0); 
-            rb.velocity += Vector2.up * fuerzaDeSalto; 
+
+            //rb.velocity = new Vector2(rb.velocity.x, 0); 
+            //rb.velocity += Vector2.up * fuerzaDeSalto; 
+
+            rb.velocity = new Vector2(25 * direccionSalto.x, 25 * direccionSalto.y);
         }
         else
         {
@@ -895,10 +936,28 @@ public class PlayerController : MonoBehaviour
             //rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y); //obtenemos velocidad del rigidbody
             //rb.velocity += direccionSalto * fuerzaDeSaltoDesdeMuro; //sumamos la velocidad del rb al producto del
             //rb.velocity = new Vector2(20 * direccionSalto.x, 20);
-            rb.velocity = new Vector2(rb.velocity.x, 0);
-            rb.velocity += Vector2.up * fuerzaDeSalto;
+
+            //rb.velocity = new Vector2(rb.velocity.x, 0);
+            //rb.velocity += Vector2.up * fuerzaDeSalto;
+
+            rb.velocity = new Vector2(25 * direccionSalto.x, 25 * direccionSalto.y);
         }
+        
+        */
     }
+
+    public void CambiarDireccionEnAire()
+    {
+        float movimientoHorizontal = Input.GetAxis("Horizontal"); // Obtener entrada horizontal del jugador
+        float movimientoVertical = Input.GetAxis("Vertical"); // Obtener entrada horizontal del jugador
+
+        // Aplicar movimiento horizontal mientras estás en el aire
+        rb.velocity = new Vector2(movimientoHorizontal * 12, rb.velocity.y);
+        //rb.velocity = new Vector2(movimientoHorizontal * 12, movimientoVertical * 12);
+        enAireDesdeMuro = true;
+        Debug.Log("CAMBIAR DIRECCION EN EL AIRE");
+    }
+
 
     //para poder caminar y para las animaciones
     public void Caminar()
