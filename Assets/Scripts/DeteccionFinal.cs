@@ -10,7 +10,7 @@ public class DeteccionFinal : MonoBehaviour //47
     {
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("DETECTA JUGADOR");
+            Debug.Log("DETECTA JUGADOR - DeteccionFinal");
             GameManager.instance.ActivarPanelTransicion();
             GameManager.instance.avanzandoNivel = avanzando;
             StartCoroutine(EsperarCambioPosicion());
@@ -20,10 +20,10 @@ public class DeteccionFinal : MonoBehaviour //47
     private IEnumerator EsperarCambioPosicion()
     {
         yield return new WaitForSeconds(0.1f);
-        GameManager.instance.CambiarPosicionJugador();
+        GameManager.instance.CambiarPosicionJugador(); //cambiamos posicion del player 
         if(avanzando)
-            GameManager.instance.nivelActual++;
+            GameManager.instance.nivelActual++; //cambiamos el nivel en el que se encuentra
         else 
-            GameManager.instance.nivelActual--;
+            GameManager.instance.nivelActual--; //cambiamos el nivel en el que se encuentra
     }
 }

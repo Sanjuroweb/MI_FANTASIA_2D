@@ -238,7 +238,7 @@ public class PlayerController : MonoBehaviour
         if (aplicarFuerza)
         {
             //a 0 para que no se contraresten
-            velocidaDeMovimiento = 0;
+            //velocidaDeMovimiento = 0;
             rb.velocity = Vector2.zero;
             rb.AddForce(-direccionDaño * 25, ForceMode2D.Impulse);
             aplicarFuerza = false;
@@ -1032,6 +1032,11 @@ public class PlayerController : MonoBehaviour
 
     private void probarControles()
     {
+        /*float horizontalinput = input.getaxis("horizontal");
+        if (horizontalinput != 0)
+        {
+            debug.log("joystick axis: " + horizontalinput);
+        }*/
         if (Input.GetKey(KeyCode.JoystickButton0))
         {
             Debug.Log("JoystickButton0");

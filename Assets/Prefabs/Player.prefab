@@ -142,10 +142,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 454316770250240057}
+  - component: {fileID: 18377903935756256}
   - component: {fileID: 7799230205722355638}
   - component: {fileID: 4313985722910830866}
   - component: {fileID: 2014134973498351497}
-  - component: {fileID: 18377903935756256}
   - component: {fileID: 3860534422869880246}
   m_Layer: 0
   m_Name: Player
@@ -170,6 +170,61 @@ Transform:
   - {fileID: 7222143166413999069}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &18377903935756256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6851981901136081463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9c23c373dbf3434ea1cb7881b0958e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direccion: {x: 0, y: 0}
+  direccionRaw: {x: 0, y: 0}
+  bulletPref: {fileID: 0}
+  velocidaDeMovimiento: 10
+  fuerzaDeSalto: 14
+  fuerzaDeSaltoDesdeMuro: 5
+  fuerzaDeSaltoDesdeMuroX: 12
+  fuerzaDeSaltoDesdeMuroY: 12
+  velocidadDash: 20
+  velocidadDeslizar: 1.5
+  vidas: 3
+  tiempoInmortalidad: 0
+  saltospermitidos: 1
+  saltosRestantes: 0
+  layerPiso:
+    serializedVersion: 2
+    m_Bits: 64
+  radioDeColision: 0.1
+  abajo: {x: 0, y: -0.8}
+  derecha: {x: 0.6, y: 0}
+  izquierda: {x: -0.6, y: 0}
+  abuelitaLoca: 0
+  puedeMover: 1
+  enSuelo: 0
+  puedeDash: 0
+  haciendoDash: 0
+  tocadoPiso: 0
+  haciendoShake: 0
+  estaAtacando: 0
+  enMuro: 0
+  muroDerecho: 0
+  muroIzquierdo: 0
+  agarrarse: 0
+  saltarDeMuro: 0
+  esInmortal: 0
+  aplicarFuerza: 0
+  terminandoMapa: 0
+  enEscalera: 0
+  enAireDesdeMuro: 0
+  velocidadEscalar: 0
+  x: 0
+  y: 0
+  particulas: {fileID: 0}
 --- !u!212 &7799230205722355638
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -284,45 +339,6 @@ CapsuleCollider2D:
   m_Offset: {x: -0.0028164387, y: -0.01690054}
   m_Size: {x: 1.135633, y: 1.5799999}
   m_Direction: 0
---- !u!114 &18377903935756256
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6851981901136081463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9c23c373dbf3434ea1cb7881b0958e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  direccion: {x: 0, y: 0}
-  velocidaDeMovimiento: 10
-  fuerzaDeSalto: 14
-  velocidadDash: 20
-  velocidadDeslizar: 1.5
-  layerPiso:
-    serializedVersion: 2
-    m_Bits: 64
-  radioDeColision: 0.1
-  abajo: {x: 0, y: -0.8}
-  derecha: {x: 0.6, y: 0}
-  izquierda: {x: -0.6, y: 0}
-  abuelitaLoca: 0
-  puedeMover: 1
-  enSuelo: 0
-  puedeDash: 0
-  haciendoDash: 0
-  tocadoPiso: 0
-  haciendoShake: 0
-  estaAtacando: 0
-  enMuro: 0
-  muroDerecho: 0
-  muroIzquierdo: 0
-  agarrarse: 0
-  saltarDeMuro: 0
-  x: 0
-  y: 0
 --- !u!95 &3860534422869880246
 Animator:
   serializedVersion: 5

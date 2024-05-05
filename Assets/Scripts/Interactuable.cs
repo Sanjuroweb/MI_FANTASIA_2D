@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.PlayerLoop;
 
 public class Interactuable : MonoBehaviour //38
 {
@@ -21,6 +22,10 @@ public class Interactuable : MonoBehaviour //38
     public bool palancaAccionada;
     public bool esCheckPoint; //46
     public bool esSelector; //48
+
+    public float x;
+    public float y;
+
 
     private void Awake()
     {
@@ -98,7 +103,9 @@ public class Interactuable : MonoBehaviour //38
 
     private void Update()
     {
-        if(puedeInteractuar && Input.GetKeyDown(KeyCode.C))
+        y = Input.GetAxis("Vertical");
+
+        if (puedeInteractuar && y>0)
         {
             Cofre();
             Palanca(); //39

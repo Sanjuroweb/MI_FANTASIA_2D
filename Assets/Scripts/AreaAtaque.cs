@@ -23,6 +23,16 @@ public class AreaAtaque : MonoBehaviour
             {
                 collision.GetComponent<Waypoints>().RecibirDaño();
             }
+            //enemB
+            else if (collision.name == "SkeletonMelee")
+            {
+                collision.GetComponent<SkeletonMelee>().RecibirDaño();
+            }
+            //enemB
+            else if (collision.name == "SkeMage")
+            {
+                collision.GetComponent<SkeletonMage>().RecibirDaño();
+            }
         }
         //32
         else if (collision.CompareTag("Destruible"))

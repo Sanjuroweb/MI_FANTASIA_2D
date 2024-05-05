@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour //30
     //49
     private void Start()
     {
-        if(SceneManager.GetActiveScene().name == "nivel1")
+        if(SceneManager.GetActiveScene().name == "Nivel1")
         {
             nivelActual = PlayerPrefs.GetInt("indiceNivelInicio");
             indiceNivelInicio = PlayerPrefs.GetInt("indiceNivelInicio");
@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour //30
         {
             if(nivelActual + 1 < posicionesAvance.Count)
             {
-                Debug.Log(nivelActual);
+                Debug.Log("Nivel "+nivelActual+" - avanzando");
                 player.transform.position = posicionesAvance[nivelActual + 1].transform.position;
                 cinemachineConfiner.m_BoundingShape2D = areasCamara[nivelActual + 1];
                 player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour //30
         {
             if (posicionesRetroceder.Count > nivelActual - 1)
             {
-                Debug.Log(nivelActual);
+                Debug.Log("Nivel " + nivelActual + " - patrás");
                 player.transform.position = posicionesRetroceder[nivelActual - 1].transform.position;
                 cinemachineConfiner.m_BoundingShape2D = areasCamara[nivelActual - 1];
                 player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
@@ -287,7 +287,7 @@ public class GameManager : MonoBehaviour //30
     {
         panelCarga.SetActive(true);
 
-        AsyncOperation asyncload = SceneManager.LoadSceneAsync("LevelSelect");
+        AsyncOperation asyncload = SceneManager.LoadSceneAsync("Elevado01");
 
         //wait until the asynchronous scene fully loads
         while (asyncload.isDone)

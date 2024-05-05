@@ -41,6 +41,16 @@ public class BolaPlayer : MonoBehaviour
             {
                 collision.GetComponent<Skeleton>().RecibirDaño();
             }
+            //enemB
+            else if (collision.name == "SkeletonMelee")
+            {
+                collision.GetComponent<SkeletonMelee>().RecibirDaño();
+            }
+            //enemB
+            else if (collision.name == "SkeMage")
+            {
+                collision.GetComponent<SkeletonMage>().RecibirDaño();
+            }
             //31
             else if (collision.name == "Spider")
             {

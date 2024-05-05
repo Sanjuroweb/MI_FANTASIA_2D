@@ -22,6 +22,12 @@ public class Bat : MonoBehaviour
     public int vidas = 3; //hay que atacarle 3 veces pa matarlo 24
     public string nombre; //para que siempre se cree con el mismo nombre 24
 
+    //GPT
+    public float upwardForce = 10f;
+    public float downwardForce = 10f;
+    private bool playerDetected = false;
+
+
     private void Awake() //24
     {
         //le damos valor al virtual camera
@@ -64,6 +70,7 @@ public class Bat : MonoBehaviour
             //el bat camina hacia la direccion que le digamos (player) 24
             rb.velocity = direccion.normalized * velocidadDeMovimiento;
             CambiarVista(direccion.normalized.x); //para que el bat mire pa donde queramos
+            StartCoroutine(StartFlight()); ////GPT
         }
         else
         {
@@ -91,6 +98,8 @@ public class Bat : MonoBehaviour
     }
 
     //para detectar collision entre player y bat 24
+    //PARA MI VIDEOJUEGO NO QUIERO QUE MI PLAYER MATE AL BICHO SALTANDO SOBRE SU CABEZA
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -98,16 +107,16 @@ public class Bat : MonoBehaviour
             //validamos si las piernas de player estan sobre cabeza de bat
             //ver 24 en el min. 35:47
             //if (enCabeza)
-            if(transform.position.y + posicionCabeza.y < player.transform.position.y - 0.7f)
-            {
-                player.GetComponent<Rigidbody2D>().velocity = Vector2.up * player.fuerzaDeSalto;
-                StartCoroutine(AgitarCamara(0.1f));
-                Destroy(gameObject, 0.2f);
-            }
+            //if (transform.position.y + posicionCabeza.y < player.transform.position.y - 0.7f)
+            //{
+            //    player.GetComponent<Rigidbody2D>().velocity = Vector2.up * player.fuerzaDeSalto;
+            //    StartCoroutine(AgitarCamara(0.1f));
+            //    Destroy(gameObject, 0.2f);
+            //}
         }
         else
         {
-            player.RecibirDaño((transform.position - player.transform.position).normalized);
+            //player.RecibirDaño((transform.position - player.transform.position).normalized);
         }
     }
     //24
@@ -150,6 +159,20 @@ public class Bat : MonoBehaviour
         {
             Destroy(gameObject, 0.2f);
         }
+    }
+
+     //GPT
+    private IEnumerator StartFlight()
+    {
+        // Habilita la física para que el pájaro caiga
+        rb.isKinematic = false;
+
+        // Simula el inicio del vuelo aplicando una fuerza hacia arriba
+        rb.AddForce(Vector3.up * upwardForce, ForceMode2D.Impulse);
+        yield return new WaitForSeconds(1.0f);
+        rb.AddForce(Vector3.down * upwardForce, ForceMode2D.Impulse);
+
+        yield return new WaitForSeconds(1.0f);
     }
 
     //param: tiempo de espera 24
