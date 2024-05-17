@@ -39,5 +39,11 @@ public class AreaAtaque : MonoBehaviour
         {
             collision.GetComponent<Animator>().SetBool("destruir", true);
         }
+
+        //me
+        else if (collision.CompareTag("PuertaRompibleTunel"))
+        {
+            collision.GetComponent<PuertaRompibleTunel>().RecibirGolpe();
+        }
     }
 }

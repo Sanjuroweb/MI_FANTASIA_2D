@@ -13,6 +13,7 @@ TagManager:
   - Checkpoint
   - Escalera
   - Muro
+  - PuertaRompibleTunel
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - Water
   - UI
   - Piso
-  - 
+  - Cubresuelo
   - 
   - 
   - 
@@ -49,6 +50,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: FondoPiedras
+    uniqueID: 2821223009
     locked: 0
   - name: Cielo
     uniqueID: 2302710567
@@ -80,8 +84,29 @@ TagManager:
   - name: Suelo
     uniqueID: 3961684661
     locked: 0
+  - name: Muro
+    uniqueID: 1551649627
+    locked: 0
+  - name: CubrePared
+    uniqueID: 3751529275
+    locked: 0
+  - name: SalienteSuelo
+    uniqueID: 353780933
+    locked: 0
+  - name: Cubresuelo
+    uniqueID: 597521635
+    locked: 0
+  - name: TrampaTecho
+    uniqueID: 3424926955
+    locked: 0
+  - name: CubreTecho
+    uniqueID: 1068351085
+    locked: 0
   - name: Props
     uniqueID: 1620198927
+    locked: 0
+  - name: Rompibles
+    uniqueID: 3823820339
     locked: 0
   - name: Character
     uniqueID: 2050349945
