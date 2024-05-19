@@ -104,6 +104,8 @@ public class Bat : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            player.RecibirDaño((transform.position - player.transform.position).normalized);
+
             //validamos si las piernas de player estan sobre cabeza de bat
             //ver 24 en el min. 35:47
             //if (enCabeza)
