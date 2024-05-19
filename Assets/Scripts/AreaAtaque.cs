@@ -45,5 +45,6 @@ public class AreaAtaque : MonoBehaviour
         {
             collision.GetComponent<PuertaRompibleTunel>().RecibirGolpe();
         }
+        //comentario Manuel
     }
 }
