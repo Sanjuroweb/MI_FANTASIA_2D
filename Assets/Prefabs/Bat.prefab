@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5352274299794982546}
+  - component: {fileID: 345374062445655598}
   - component: {fileID: 5798601266642133700}
   - component: {fileID: 5055504682105979896}
   - component: {fileID: 3965379050601258138}
   - component: {fileID: 3341740132831913797}
-  - component: {fileID: 345374062445655598}
   m_Layer: 3
   m_Name: Bat
   m_TagString: Enemigo
@@ -36,6 +36,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &345374062445655598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 165837864551793758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98de18ff1f46f264fa45b58ff7e6155d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  velocidadDeMovimiento: 3
+  radioDeDeteccion: 7
+  layerJugador:
+    serializedVersion: 2
+    m_Bits: 64
+  posicionCabeza: {x: 0.1, y: 0.45}
+  vidas: 3
+  nombre: Bat
+  upwardForce: 10
+  downwardForce: 10
+  speed: 2
+  height: 2
+  distance: 2
+  dashDistance: 2
+  dashSpeed: 7
 --- !u!212 &5798601266642133700
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -171,23 +198,3 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &345374062445655598
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 165837864551793758}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98de18ff1f46f264fa45b58ff7e6155d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  velocidadDeMovimiento: 3
-  radioDeDeteccion: 7
-  layerJugador:
-    serializedVersion: 2
-    m_Bits: 64
-  posicionCabeza: {x: 0.1, y: 0.45}
-  vidas: 3
-  nombre: Bat

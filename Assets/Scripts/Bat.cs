@@ -1,6 +1,7 @@
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Bat : MonoBehaviour
@@ -13,6 +14,7 @@ public class Bat : MonoBehaviour
 
     public float velocidadDeMovimiento = 3; //24
     public float radioDeDeteccion = 15; //24
+    public float distanciaDeteccionJugador = 25; //me
     public LayerMask layerJugador; //24
 
     //necesitamos saber cual es la cabeza del muercielago para nuestros ataques 24
@@ -26,6 +28,15 @@ public class Bat : MonoBehaviour
     public float upwardForce = 10f;
     public float downwardForce = 10f;
     private bool playerDetected = false;
+
+    //GPT PARABOLA
+    public float speed = 2.0f;
+    public float height = 2.0f;
+    public float distance = 2.0f;
+    private Vector3 startPosition;
+    private bool isMoving = false;
+    public float dashDistance; // Distancia que avanzará hacia el jugador
+    public float dashSpeed; // Velocidad del avance hacia el jugador
 
 
     private void Awake() //24
@@ -41,6 +52,7 @@ public class Bat : MonoBehaviour
     void Start()
     {
         gameObject.name = nombre; //para que siempre se cree con el mismo nombre en el inspector 24
+        startPosition = transform.position; // Guarda la posición inicial del pájaro
     }
 
     //para dibujar un area en el inspector y ver la zona de agro 24
@@ -54,6 +66,10 @@ public class Bat : MonoBehaviour
         Gizmos.color = Color.green;
         //param: centro y tamaño del cubo
         Gizmos.DrawCube((Vector2)transform.position + posicionCabeza, new Vector2(1, 0.5f) * 0.7f);
+
+        //area de deteccion de la bolaMago
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, distanciaDeteccionJugador);
     }
 
     // Update is called once per frame
@@ -70,17 +86,76 @@ public class Bat : MonoBehaviour
             //el bat camina hacia la direccion que le digamos (player) 24
             rb.velocity = direccion.normalized * velocidadDeMovimiento;
             CambiarVista(direccion.normalized.x); //para que el bat mire pa donde queramos
-            StartCoroutine(StartFlight()); ////GPT
+            //StartCoroutine(StartFlight()); ////GPT
+            StartCoroutine(MoveParabolically(direccion));  //GPT
         }
         else
         {
             rb.velocity = Vector2.zero;
         }
 
-        //para saber si player cae sobre cabeza de bat 24
-        //parametros: pos. de la cabeza, tamaño de la caja sobre la cabeza, angulo y layerMask del player
-        //, comentamos para hacerlo de otra manera
-        //enCabeza = Physics2D.OverlapBox((Vector2)transform.position + posicionCabeza, new Vector2(1, 0.5f) * 0.7f, 0, layerJugador);
+        //caminamos pal player
+        if(distancia <= distanciaDeteccionJugador)
+        {
+            Vector2 movimiento = new Vector2(direccion.x, 0);
+            movimiento = movimiento.normalized;
+            rb.velocity = new Vector2(movimiento.x * velocidadDeMovimiento, rb.velocity.y);
+            rb.velocity = direccion.normalized * velocidadDeMovimiento;
+            CambiarVista(direccion.normalized.x); //para que el bat mire pa donde queramos
+        }
+    }
+
+    //GPT
+    private IEnumerator MoveParabolically(Vector2 direccion)
+    {
+        isMoving = true;
+        float elapsedTime = 0;
+
+        //parábola
+        while (elapsedTime < distance / speed)
+        {
+            elapsedTime += Time.deltaTime;
+            //t va desde 0 hasta 1
+            float t = elapsedTime * speed / distance;
+
+            float x = t * distance;
+            float y = height * Mathf.Sin(t * Mathf.PI);
+
+            transform.position = startPosition + new Vector3(x, -y, 0);
+
+            yield return null; // Espera hasta el siguiente frame
+        }
+
+        // Movimiento hacia el jugador
+        //Vector3 targetPosition = player.position;
+        Vector3 directionNormalizada = direccion.normalized;
+        Vector3 dashTarget = transform.position + directionNormalizada * dashDistance;
+
+        elapsedTime = 0;
+        while (elapsedTime < dashDistance / dashSpeed)
+        {
+            elapsedTime += Time.deltaTime;
+            transform.position = Vector3.Lerp(transform.position, dashTarget, elapsedTime * dashSpeed / dashDistance);
+
+            yield return null; // Espera hasta el siguiente frame
+        }
+
+
+        isMoving = false;
+    }
+
+    //GPT
+    private IEnumerator StartFlight()
+    {
+        // Habilita la física para que el pájaro caiga
+        rb.isKinematic = false;
+
+        // Simula el inicio del vuelo aplicando una fuerza hacia arriba
+        rb.AddForce(Vector3.up * upwardForce, ForceMode2D.Impulse);
+        yield return new WaitForSeconds(1.0f);
+        rb.AddForce(Vector3.down * upwardForce, ForceMode2D.Impulse);
+
+        yield return new WaitForSeconds(1.0f);
     }
 
     //copiamos de PlayerController 24
@@ -163,19 +238,7 @@ public class Bat : MonoBehaviour
         }
     }
 
-     //GPT
-    private IEnumerator StartFlight()
-    {
-        // Habilita la física para que el pájaro caiga
-        rb.isKinematic = false;
-
-        // Simula el inicio del vuelo aplicando una fuerza hacia arriba
-        rb.AddForce(Vector3.up * upwardForce, ForceMode2D.Impulse);
-        yield return new WaitForSeconds(1.0f);
-        rb.AddForce(Vector3.down * upwardForce, ForceMode2D.Impulse);
-
-        yield return new WaitForSeconds(1.0f);
-    }
+    
 
     //param: tiempo de espera 24
     private IEnumerator AgitarCamara(float tiempo)

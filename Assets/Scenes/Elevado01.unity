@@ -96125,7 +96125,7 @@ Transform:
   m_GameObject: {fileID: 155447061}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 43.75, y: 14.47, z: -10}
+  m_LocalPosition: {x: 31.7, y: 58.2, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -100575,7 +100575,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 43.75, y: 14.47, z: -10}
+  m_LocalPosition: {x: 31.7, y: 58.2, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -103586,16 +103586,28 @@ PrefabInstance:
       value: Bat
       objectReference: {fileID: 0}
     - target: {fileID: 345374062445655598, guid: 6503f240aed41824b957a8c377f0cdba, type: 3}
+      propertyPath: dashSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 345374062445655598, guid: 6503f240aed41824b957a8c377f0cdba, type: 3}
+      propertyPath: dashDistance
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 345374062445655598, guid: 6503f240aed41824b957a8c377f0cdba, type: 3}
       propertyPath: radioDeDeteccion
-      value: 9
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 345374062445655598, guid: 6503f240aed41824b957a8c377f0cdba, type: 3}
+      propertyPath: distanciaDeteccionJugador
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5352274299794982546, guid: 6503f240aed41824b957a8c377f0cdba, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -23.4
+      value: 16.8
       objectReference: {fileID: 0}
     - target: {fileID: 5352274299794982546, guid: 6503f240aed41824b957a8c377f0cdba, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 55.17
+      value: 59.4
       objectReference: {fileID: 0}
     - target: {fileID: 5352274299794982546, guid: 6503f240aed41824b957a8c377f0cdba, type: 3}
       propertyPath: m_LocalPosition.z
@@ -179936,11 +179948,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 454316770250240057, guid: 85ab33d1ac0d9314db4b9237855ffeb6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 43.75
+      value: 31.7
       objectReference: {fileID: 0}
     - target: {fileID: 454316770250240057, guid: 85ab33d1ac0d9314db4b9237855ffeb6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 14.47
+      value: 58.2
       objectReference: {fileID: 0}
     - target: {fileID: 454316770250240057, guid: 85ab33d1ac0d9314db4b9237855ffeb6, type: 3}
       propertyPath: m_LocalPosition.z
